@@ -61,9 +61,12 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
+      - name: Copy .htaccess
+        run: cp .htaccess out
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
+          name: out
           path: ./out
 
   # Deployment job
@@ -79,3 +82,7 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:cis1951
+      - name: Copy SSH key
+        run: echo "${{ secrets.SSH_KEY }}" > {{ runner.temp }}/id_cis1951
+      - name: Upload files
+        run: rsync -av --delete -e "ssh -i {{ runner.temp }}/id_cis1951" out/ cis1951@eniac.seas.upenn.edu:public_html
