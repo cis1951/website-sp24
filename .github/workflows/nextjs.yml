@@ -83,6 +83,6 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:cis1951
       - name: Copy SSH key
-        run: echo "${{ secrets.SSH_KEY }}" > {{ runner.temp }}/id_cis1951
+        run: echo "${{ secrets.SSH_KEY }}" > ${{ runner.temp }}/id_cis1951
       - name: Upload files
-        run: rsync -av --delete -e "ssh -i {{ runner.temp }}/id_cis1951" out/ cis1951@eniac.seas.upenn.edu:public_html
+        run: rsync -av --delete -e "ssh -i ${{ runner.temp }}/id_cis1951" out/ cis1951@eniac.seas.upenn.edu:public_html
