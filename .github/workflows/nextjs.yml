@@ -84,6 +84,7 @@ jobs:
           tags: tag:cis1951
       - name: Write SSH files
         run: |
+          umask 077
           echo "${{ secrets.SSH_KEY }}" > ${{ runner.temp }}/id_cis1951
           echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ${{ runner.temp }}/known_hosts
       - name: Upload files
