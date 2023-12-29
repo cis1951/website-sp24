@@ -26,6 +26,7 @@
       "@/app/*": ["app/*"],
       "@/components/*": ["components/*"],
       "@/styles/*": ["styles/*"],
+      "contentlayer/generated": ["./.contentlayer/generated"]
     },
   },
   "include": [

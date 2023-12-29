@@ -12,7 +12,14 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body>
+                <div className="container mx-auto p-4 md:px-8 md:py-16">
+                    <h1 className="text-8xl w-fit font-bold text-transparent bg-clip-text bg-gradient-to-br from-cyan-700 to-purple-700 dark:from-cyan-400 dark:to-purple-400">CIS 1951</h1>
+                    <div className="mt-8">
+                        {children}
+                    </div>
+                </div>
+            </body>
         </html>
     )
 }

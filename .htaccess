@@ -1,0 +1,14 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Check if the .html version of the requested resource exists
+RewriteCond %{REQUEST_FILENAME}.html -f
+# Rewrite to .html version if existing (for requests without an extension)
+RewriteRule ^([^\.]+)$ $1.html [NC,L]
+
+# Custom error document
+ErrorDocument 404 /404.html
+
+# Internally rewrite requests to 404.html, while maintaining the 404 status
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^404\.html$ - [R=404,L]

@@ -1,3 +1,5 @@
+import Page from "./[slug]/page";
+
 export default function Home() {
-    return <div>Hello, world!</div>
+    return <Page params={{ slug: "" }} />
 }

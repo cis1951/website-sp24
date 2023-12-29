@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    color-scheme: light dark;
+    @apply dark:bg-black dark:text-white;
+}
+
+.card {
+    @apply rounded-xl p-4 bg-neutral-100 dark:bg-neutral-800;
+}
+
+.prose {
+    @apply leading-relaxed;
+}
+
+.prose p {
+    @apply mb-2 last:mb-0;
+}
