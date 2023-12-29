@@ -1,4 +1,5 @@
 import { defineDocumentType, makeSource } from 'contentlayer/source-files'
+import rehypePrism from '@mapbox/rehype-prism'
 
 export const Page = defineDocumentType(() => ({
     name: 'Page',
@@ -58,4 +59,7 @@ export const Exam = defineDocumentType(() => ({
 export default makeSource({
     contentDirPath: 'content',
     documentTypes: [Page, Homework, Lecture, Exam],
+    mdx: {
+        rehypePlugins: [rehypePrism],
+    },
 })

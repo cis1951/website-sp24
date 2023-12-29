@@ -8,13 +8,5 @@ body {
 }
 
 .card {
-    @apply rounded-xl p-4 bg-neutral-100 dark:bg-neutral-800;
-}
-
-.prose {
-    @apply leading-relaxed;
-}
-
-.prose p {
-    @apply mb-2 last:mb-0;
+    @apply rounded-xl p-4 bg-neutral-50 border border-neutral-200 dark:border-neutral-700 dark:bg-neutral-800;
 }

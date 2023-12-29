@@ -8,9 +8,13 @@
     "@types/mdx": "^2.0.10",
     "contentlayer": "^0.3.4",
     "next": "^14.0.4",
-    "next-contentlayer": "^0.3.4"
+    "next-contentlayer": "^0.3.4",
+    "prism-themes": "^1.9.0"
   },
   "devDependencies": {
+    "@mapbox/rehype-prism": "^0.9.0",
+    "@tailwindcss/typography": "^0.5.10",
+    "@types/mapbox__rehype-prism": "^0.8.3",
     "@types/react": "18.2.45",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",

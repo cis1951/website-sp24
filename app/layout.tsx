@@ -1,4 +1,5 @@
 import "@/styles/global.css"
+import "prism-themes/themes/prism-atom-dark.css"
 
 export const metadata = {
     title: 'Next.js',
@@ -13,8 +14,8 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <div className="container mx-auto p-4 md:px-8 md:py-16">
-                    <h1 className="text-8xl w-fit font-bold text-transparent bg-clip-text bg-gradient-to-br from-cyan-700 to-purple-700 dark:from-cyan-400 dark:to-purple-400">CIS 1951</h1>
+                <div className="container mx-auto px-4 py-8 md:px-8 md:py-16">
+                    <h1 className="text-6xl md:text-8xl w-fit font-bold text-transparent bg-clip-text bg-gradient-to-br from-cyan-700 to-purple-700 dark:from-cyan-400 dark:to-purple-400">CIS 1951</h1>
                     <div className="mt-8">
                         {children}
                     </div>
