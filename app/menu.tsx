@@ -55,15 +55,10 @@ export function MenuContextProvider({ children }: { children: ReactNode }) {
     const pathname = usePathname()
     const [activeState, setActiveState] = useState<{ item: string | null, pathname: string }>({ item: null, pathname })
 
-    useEffect(() => {
-        if (activeState.pathname !== pathname) {
-            setActiveState({ item: null, pathname })
-        }
-    }, [pathname])
-
     return <MenuContext.Provider value={{
-        activeItem: activeState.item,
+        activeItem: activeState.pathname === pathname ? activeState.item : null,
         setActiveItem(item) {
+            console.log({ item, pathname })
             setActiveState({ item, pathname })
         }
     }}>

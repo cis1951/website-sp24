@@ -1,15 +1,16 @@
-import { allAssessments, allHomework } from 'contentlayer/generated'
+import { allAssessments } from 'contentlayer/generated'
 import { notFound } from 'next/navigation'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { mdxComponents } from '@/components/mdx'
 import { Card } from '@/components/Card'
 import { Prose } from '@/components/Prose'
-import { MenuItemActivator } from '@/app/menu'
 
 export async function generateStaticParams() {
+    if (!allAssessments.length) return [{ slug: "dummy" }]
+
     return allAssessments.map(page => ({
         slug: page.slug,
-    })).filter(slug => slug)
+    }))
 }
 
 export default function Assessment({ params }: { params: { slug: string } }) {

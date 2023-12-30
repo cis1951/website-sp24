@@ -1,8 +1,7 @@
 import { allHomework, allAssessments } from 'contentlayer/generated'
 import { Card } from '@/components/Card'
-import { MenuItemActivator } from '@/app/menu'
 import Link from 'next/link'
-import { format } from 'date-fns'
+import { FormattedDate } from '@/components/FormattedDate'
 
 type Assignment = {
     title: string
@@ -70,11 +69,11 @@ function AssignmentRow({ title, href, isReleased, releaseDate, dates }: Assignme
         <td className="lg:py-2 w-full block lg:table-cell">
             {isReleased ?
                 <Link href={href} className="link font-bold">{title}</Link> :
-                <span className="italic">{title}{releaseDate && <> (available <strong>{format(releaseDate, "M/d")}</strong>)</>}</span>}
+                <span className="italic">{title}{releaseDate && <> (available <strong><FormattedDate date={releaseDate} format="M/d" /></strong>)</>}</span>}
         </td>
         <td className="lg:py-2 block lg:table-cell">
             {dates.map((item, index) => <div key={index}>
-                {item.name} <strong>{format(item.date, item.specifyTime ? "E, M/d @ h:mmaa" : "E, M/d")}</strong>
+                {item.name} <strong><FormattedDate date={item.date} format={item.specifyTime ? "E, M/d @ h:mmaa" : "E, M/d"} /></strong>
             </div>)}
         </td>
     </tr>

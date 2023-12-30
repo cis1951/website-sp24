@@ -9,7 +9,7 @@ import { MenuItemActivator } from '@/app/menu'
 export async function generateStaticParams() {
     return allPages.map(page => ({
         slug: page.slug,
-    })).filter(slug => slug)
+    })).filter(({ slug }) => slug)
 }
 
 export default function Page({ params }: { params: { slug: string } }) {

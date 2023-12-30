@@ -7,7 +7,8 @@
     "@next/mdx": "^14.0.4",
     "@types/mdx": "^2.0.10",
     "contentlayer": "^0.3.4",
-    "date-fns": "^3.0.6",
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0",
     "next": "^14.0.4",
     "next-contentlayer": "^0.3.4",
     "prism-themes": "^1.9.0"
