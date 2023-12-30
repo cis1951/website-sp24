@@ -25,6 +25,12 @@ export const menuItems: MenuItemProps[] = [
         href: "/syllabus",
     },
     {
+        id: "assignments",
+        title: "Assignments",
+        icon: "📋",
+        href: "/assignments",
+    },
+    {
         id: "codestyle",
         title: "Style Guide",
         icon: "💅",

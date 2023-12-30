@@ -28,9 +28,40 @@ export const Homework = defineDocumentType(() => ({
     contentType: 'mdx',
     fields: {
         title: { type: 'string', required: true },
+        isReleased: { type: 'boolean', required: true },
+        releaseDate: { type: 'date', required: false },
+        dueDate: { type: 'date', required: true },
+        auxiliaryDates: {
+            type: 'list',
+            of: {
+                type: 'nested',
+                def: () => ({
+                    fields: {
+                        name: { type: 'string', required: true },
+                        date: { type: 'date', required: true },
+                    },
+                }),
+            },
+            required: false,
+        },
     },
     computedFields: {
         slug: { type: 'string', resolve: page => page._raw.flattenedPath.slice("homework/".length) },
+    },
+}))
+
+export const Assessment = defineDocumentType(() => ({
+    name: 'Assessment',
+    filePathPattern: `assessments/**/*.mdx`,
+    contentType: 'mdx',
+    fields: {
+        title: { type: 'string', required: true },
+        isReleased: { type: 'boolean', required: true },
+        releaseDate: { type: 'date', required: false },
+        assessmentDate: { type: 'date', required: true },
+    },
+    computedFields: {
+        slug: { type: 'string', resolve: page => page._raw.flattenedPath.slice("assessments/".length) },
     },
 }))
 
@@ -40,27 +71,16 @@ export const Lecture = defineDocumentType(() => ({
     contentType: 'mdx',
     fields: {
         title: { type: 'string', required: true },
+        date: { type: 'date', required: true },
     },
     computedFields: {
         slug: { type: 'string', resolve: page => page._raw.flattenedPath.slice("lectures/".length) },
     },
 }))
 
-export const Exam = defineDocumentType(() => ({
-    name: 'Exam',
-    filePathPattern: `exams/**/*.mdx`,
-    contentType: 'mdx',
-    fields: {
-        title: { type: 'string', required: true },
-    },
-    computedFields: {
-        slug: { type: 'string', resolve: page => page._raw.flattenedPath.slice("exams/".length) },
-    },
-}))
-
 export default makeSource({
     contentDirPath: 'content',
-    documentTypes: [Page, Homework, Lecture, Exam],
+    documentTypes: [Page, Homework, Assessment, Lecture],
     mdx: {
         rehypePlugins: [rehypePrism],
     },
