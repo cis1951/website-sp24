@@ -7,6 +7,8 @@ export const Page = defineDocumentType(() => ({
     contentType: 'mdx',
     fields: {
         title: { type: 'string', required: true },
+        activeMenuItem: { type: 'string', required: false },
+        customLayout: { type: 'boolean', required: false },
     },
     computedFields: {
         slug: {

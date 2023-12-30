@@ -7,6 +7,9 @@ body {
     @apply dark:bg-black dark:text-white;
 }
 
-.card {
-    @apply rounded-xl p-4 bg-neutral-50 border border-neutral-200 dark:border-neutral-700 dark:bg-neutral-800;
+.prose a, .link {
+    @apply text-cyan-500 dark:text-cyan-400 underline;
+    @apply decoration-cyan-500/50 dark:decoration-cyan-400/50;
+    @apply hover:decoration-cyan-500 dark:hover:decoration-cyan-400;
+    @apply hover:bg-cyan-500/20 dark:hover:bg-cyan-400/20;
 }

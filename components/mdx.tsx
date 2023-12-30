@@ -1,5 +1,8 @@
 import { MDXComponents } from "mdx/types";
 import Link from "next/link";
+import { Card } from "./Card";
+import { Prose } from "./Prose";
+import { StaffGrid } from "./StaffGrid";
 
 export const mdxComponents: MDXComponents = {
     a: ({ href, ...props }) => {
@@ -12,4 +15,7 @@ export const mdxComponents: MDXComponents = {
             return <a {...props} />
         }
     },
+    Card: Card,
+    Prose: Prose,
+    StaffGrid: StaffGrid,
 }

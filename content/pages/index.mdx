@@ -1,7 +1,51 @@
 ---
 title: Home
+activeMenuItem: home
+customLayout: true
 ---
 
-Hello, world!
+<Card title={<h2>Welcome</h2>} margin>
+    <Prose>
+        *\[insert course description here\]*
+    </Prose>
+</Card>
 
-[Syllabus](/~cis1951/syllabus)
+<Card title={<h2>Staff</h2>} margin>
+    <h3 className="font-bold text-xl">Instructors</h3>
+    <StaffGrid members={[
+        {
+            name: "Jordan Hawkman",
+            section: "501",
+            pennkey: "jhawk24",
+            school: "seas",
+            pronouns: "he/him",
+        },
+        {
+            name: "Anthony Li",
+            section: "501",
+            flavorText: "OvercomplicatedView",
+            pennkey: "antli",
+            school: "seas",
+            pronouns: "he/him",
+            github: "anli5005",
+            website: "https://anli.dev",
+        },
+        {
+            name: "Yuying Fan",
+            section: "502",
+            pennkey: "yuyingf",
+            school: "seas",
+            pronouns: "she/her",
+        },
+    ]} />
+
+    <h3 className="mt-4 text-xl font-bold">TAs</h3>
+    <StaffGrid members={[
+        {
+            name: "TBD",
+            pennkey: "tbd",
+            school: "tbd",
+            pronouns: "TBD",
+        },
+    ]} />
+</Card>
