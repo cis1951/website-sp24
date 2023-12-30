@@ -10,7 +10,7 @@ export type FormattedDateProps = {
     format: string
 }
 
-const defaultTimezone = "America/New_York"
+export const defaultTimezone = "America/New_York"
 
 export function FormattedDate({ date, format: formatStr }: FormattedDateProps) {
     const [value, setValue] = useState(formatInTimeZone(date, defaultTimezone, formatStr, {

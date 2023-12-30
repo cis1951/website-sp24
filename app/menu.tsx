@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { ReactNode, createContext, useContext, useEffect, useState } from "react"
 
 export type MenuItemProps = {
@@ -58,7 +58,6 @@ export function MenuContextProvider({ children }: { children: ReactNode }) {
     return <MenuContext.Provider value={{
         activeItem: activeState.pathname === pathname ? activeState.item : null,
         setActiveItem(item) {
-            console.log({ item, pathname })
             setActiveState({ item, pathname })
         }
     }}>
@@ -88,6 +87,7 @@ export function MenuItemActivator({ item }: MenuItemActivatorProps) {
 
 function MenuItem({ id, title, icon, href }: MenuItemProps) {
     const context = useMenuContext()
+    const router = useRouter()
     const isActive = id === context.activeItem
 
     let className = "block px-3 py-2 rounded-xl group relative bg-opacity-0"
@@ -100,7 +100,14 @@ function MenuItem({ id, title, icon, href }: MenuItemProps) {
     let containerClassName = "flex gap-3 transition-[margin-left] justify-center text-center md:text-left"
     if (!isActive) containerClassName += " md:group-hover:ml-1"
 
-    return <Link className={className} href={href}>
+    return <Link className={className} href={href} onClick={e => {
+        if (href === "/") {
+            // HACK: For some reason navigating to / forces a full refresh
+            // So we just intercept it and do it ourselves instead
+            router.push("/")
+            e.preventDefault()
+        }
+    }}>
         <div className={containerClassName}>
             <div className="w-4">{icon}</div>
             <div className="md:grow line-clamp-1 overflow-hidden overflow-ellipsis">{title}</div>

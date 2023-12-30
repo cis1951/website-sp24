@@ -1,7 +1,8 @@
 import { allHomework, allAssessments } from 'contentlayer/generated'
 import { Card } from '@/components/Card'
 import Link from 'next/link'
-import { FormattedDate } from '@/components/FormattedDate'
+import { FormattedDate, defaultTimezone } from '@/components/FormattedDate'
+import { toDate } from 'date-fns-tz'
 
 type Assignment = {
     title: string
@@ -16,18 +17,22 @@ type Assignment = {
     sortDate: Date
 }
 
+export function parseDate(str: string) {
+    return toDate(str, { timeZone: defaultTimezone })
+}
+
 export const formattedHomework: Assignment[] = allHomework.map(hw => {
-    const due = new Date(hw.dueDate)
+    const due = parseDate(hw.dueDate)
 
     return {
         title: hw.title,
         href: `/assignments/hw/${hw.slug}`,
         isReleased: hw.isReleased,
-        releaseDate: hw.releaseDate && new Date(hw.releaseDate),
+        releaseDate: hw.releaseDate && parseDate(hw.releaseDate),
         dates: [
             ...(hw.auxiliaryDates ?? []).map(aux => ({
                 name: aux.name,
-                date: new Date(aux.date),
+                date: parseDate(aux.date),
                 specifyTime: true,
             })),
             {
@@ -36,18 +41,18 @@ export const formattedHomework: Assignment[] = allHomework.map(hw => {
                 specifyTime: true,
             }
         ],
-        sortDate: new Date(hw.dueDate),
+        sortDate: parseDate(hw.dueDate),
     }
 })
 
 export const formattedAssessments = allAssessments.map(a => {
-    const date = new Date(a.assessmentDate)
+    const date = parseDate(a.assessmentDate)
 
     return {
         title: a.title,
         href: `/assignments/assessment/${a.slug}`,
         isReleased: a.isReleased,
-        releaseDate: a.releaseDate && new Date(a.releaseDate),
+        releaseDate: a.releaseDate && parseDate(a.releaseDate),
         dates: [
             {
                 name: "Scheduled",
