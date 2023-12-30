@@ -91,7 +91,7 @@ function MenuItem({ id, title, icon, href }: MenuItemProps) {
 
     let className = "block px-3 py-2 rounded-xl group relative bg-opacity-0"
     if (isActive) {
-        className += " bg-gradient-to-br from-cyan-700 to-purple-700 text-white"
+        className += " bg-gradient-to-br from-cyan-600 to-purple-600 text-white"
     } else {
         className += " transition-[background-color] active:bg-neutral-200 dark:active:bg-neutral-700 md:dark:active:bg-neutral-800"
     }
