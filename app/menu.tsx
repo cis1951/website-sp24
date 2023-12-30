@@ -78,9 +78,10 @@ export type MenuItemActivatorProps = {
 
 export function MenuItemActivator({ item }: MenuItemActivatorProps) {
     const context = useMenuContext()
+    const pathname = usePathname()
     useEffect(() => {
         context.setActiveItem(item)
-    }, [])
+    }, [pathname])
 
     return null
 }
@@ -100,14 +101,7 @@ function MenuItem({ id, title, icon, href }: MenuItemProps) {
     let containerClassName = "flex gap-3 transition-[margin-left] justify-center text-center md:text-left"
     if (!isActive) containerClassName += " md:group-hover:ml-1"
 
-    return <Link className={className} href={href} onClick={e => {
-        if (href === "/") {
-            // HACK: For some reason navigating to / forces a full refresh
-            // So we just intercept it and do it ourselves instead
-            router.push("/")
-            e.preventDefault()
-        }
-    }}>
+    return <Link className={className} href={href}>
         <div className={containerClassName}>
             <div className="w-4">{icon}</div>
             <div className="md:grow line-clamp-1 overflow-hidden overflow-ellipsis">{title}</div>

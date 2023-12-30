@@ -1,6 +1,6 @@
 import { formattedAssessments, formattedHomework, AssignmentTable } from "@/app/assignments/page"
 
-const threshold = 5 * 7 * 24 * 60 * 60 * 1000 // 3 weeks
+const threshold = 3 * 7 * 24 * 60 * 60 * 1000 // 3 weeks
 const thresholdText = "3 weeks"
 
 const upcoming = [...formattedHomework, ...formattedAssessments].filter(({ sortDate }) => {
