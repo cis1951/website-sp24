@@ -52,7 +52,7 @@ export const formattedAssessments = allAssessments.map(a => {
             {
                 name: "Scheduled",
                 date,
-                specifyTime: true,
+                specifyTime: false,
             }
         ],
         sortDate: date,

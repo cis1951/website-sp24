@@ -1,20 +1,26 @@
-import { formattedAssessments, formattedHomework, AssignmentTable } from "@/app/assignments/page"
+"use client"
 
-const threshold = 3 * 7 * 24 * 60 * 60 * 1000 // 3 weeks
+import { useState } from "react"
+import { ScheduleTable, getSchedule } from "./Schedule"
+
+const threshold = 5 * 7 * 24 * 60 * 60 * 1000 // 3 weeks
 const thresholdText = "3 weeks"
 
-const upcoming = [...formattedHomework, ...formattedAssessments].filter(({ sortDate }) => {
-    const remainingTime = sortDate.getTime() - new Date().getTime()
-    return remainingTime >= 0 && remainingTime <= threshold
-})
+const schedule = getSchedule(null)
 
 export function UpcomingAssignments() {
+    const [now] = useState(new Date())
+    const upcoming = schedule.filter(item => {
+        const diff = item.date.getTime() - now.getTime()
+        return diff >= 0 && diff < threshold
+    })
+
     if (!upcoming.length) return <div>
         There are no upcoming assignments in the next {thresholdText}.
     </div>
 
     return <>
         <div className="mb-4">There are {upcoming.length} {upcoming.length === 1 ? "assignment" : "assignments"} in the next {thresholdText}:</div>
-        <AssignmentTable assignments={upcoming} />
+        <ScheduleTable items={upcoming} />
     </>
 }

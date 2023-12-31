@@ -26,7 +26,8 @@
       "@/app/*": ["app/*"],
       "@/components/*": ["components/*"],
       "@/styles/*": ["styles/*"],
-      "contentlayer/generated": ["./.contentlayer/generated"]
+      "contentlayer/generated": ["./.contentlayer/generated"],
+      "@/sections": ["sections.json"],
     },
   },
   "include": [

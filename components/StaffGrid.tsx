@@ -1,6 +1,6 @@
 export type StaffMemberProps = {
     name: string
-    section?: "501" | "502"
+    section?: "201" | "202"
     flavorText?: string
     pennkey: string
     school: "sas" | "seas" | "wharton" // Sorry, forgot what Penn Medicine has

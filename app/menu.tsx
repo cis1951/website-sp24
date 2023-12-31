@@ -25,6 +25,12 @@ export const menuItems: MenuItemProps[] = [
         href: "/syllabus",
     },
     {
+        id: "schedule",
+        title: "Schedule",
+        icon: "📅",
+        href: "/schedule",
+    },
+    {
         id: "assignments",
         title: "Assignments",
         icon: "📋",
@@ -53,12 +59,12 @@ const MenuContext = createContext<MenuCoordinator | null>(null)
 
 export function MenuContextProvider({ children }: { children: ReactNode }) {
     const pathname = usePathname()
-    const [activeState, setActiveState] = useState<{ item: string | null, pathname: string }>({ item: null, pathname })
+    const [activeState, setActiveState] = useState<string | null>(null)
 
     return <MenuContext.Provider value={{
-        activeItem: activeState.pathname === pathname ? activeState.item : null,
+        activeItem: activeState,
         setActiveItem(item) {
-            setActiveState({ item, pathname })
+            setActiveState(item)
         }
     }}>
         {children}
@@ -78,10 +84,9 @@ export type MenuItemActivatorProps = {
 
 export function MenuItemActivator({ item }: MenuItemActivatorProps) {
     const context = useMenuContext()
-    const pathname = usePathname()
     useEffect(() => {
         context.setActiveItem(item)
-    }, [pathname])
+    }, [])
 
     return null
 }

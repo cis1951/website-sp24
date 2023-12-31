@@ -1,5 +1,6 @@
-import { defineDocumentType, makeSource } from 'contentlayer/source-files'
+import { defineDocumentType, defineNestedType, makeSource } from 'contentlayer/source-files'
 import rehypePrism from '@mapbox/rehype-prism'
+import sections from './sections.json'
 
 export const Page = defineDocumentType(() => ({
     name: 'Page',
@@ -65,13 +66,29 @@ export const Assessment = defineDocumentType(() => ({
     },
 }))
 
+const LectureDates = defineNestedType(() => {
+    const fields = {}
+    sections.forEach(section => {
+        fields[section] = { type: 'date', required: false }
+    })
+    
+    return {
+        name: 'LectureDates',
+        fields,
+    }
+})
+
 export const Lecture = defineDocumentType(() => ({
     name: 'Lecture',
     filePathPattern: `lectures/**/*.mdx`,
     contentType: 'mdx',
     fields: {
         title: { type: 'string', required: true },
-        date: { type: 'date', required: true },
+        dates: {
+            type: 'nested',
+            of: LectureDates,
+            required: true,
+        },
     },
     computedFields: {
         slug: { type: 'string', resolve: page => page._raw.flattenedPath.slice("lectures/".length) },
