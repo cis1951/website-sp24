@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { ScheduleTable, getSchedule } from "./Schedule"
 
-const threshold = 5 * 7 * 24 * 60 * 60 * 1000 // 3 weeks
+const threshold = 3 * 7 * 24 * 60 * 60 * 1000 // 3 weeks
 const thresholdText = "3 weeks"
 
 const schedule = getSchedule(null)
