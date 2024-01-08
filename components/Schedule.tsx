@@ -6,7 +6,8 @@ import Link from "next/link"
 export type LectureScheduleItemDetails = {
     type: "lecture"
     title: string
-    body: typeof allLectures[0]["body"]
+    slug: string
+    files: string[]
 }
 
 export type AssignmentScheduleItemDetails = {
@@ -27,6 +28,7 @@ export function getSchedule(section: string | null): ScheduleItem[] {
         const shared = {
             type: "assignment" as const,
             title: hw.title,
+            slug: hw.slug,
             href: `/assignments/hw/${hw.slug}`,
             isReleased: hw.isReleased,
             releaseDate: hw.releaseDate && new Date(hw.releaseDate),
@@ -58,9 +60,12 @@ export function getSchedule(section: string | null): ScheduleItem[] {
     const lectures = allLectures.map(l => ({
         type: "lecture" as const,
         title: l.title,
-        body: l.body,
         date: l.dates[section] && new Date(l.dates[section]),
+        slug: l.slug,
+        files: l.files,
     })).filter(l => l.date)
+
+    console.log(lectures)
 
     const schedule = [...homework, ...assessments, ...lectures]
     return schedule.toSorted((a, b) => a.date.getTime() - b.date.getTime())
@@ -69,7 +74,12 @@ export function getSchedule(section: string | null): ScheduleItem[] {
 export function ScheduleRow({ date, ...details }: ScheduleItem) {
     let content: ReactNode = null
     if (details.type === "lecture") {
-        content = <>🧑‍🏫 {details.title}</>
+        content = <div>
+            <div>🧑‍🏫 {details.title}</div>
+            <div className="flex gap-2">
+                {details.files.map(file => <a className="link" href={`/~cis1951/lectures/${details.slug}/${file}`} key={file}>{file}</a>)}
+            </div>
+        </div>
     } else if (details.type === "assignment") {
         const title = details.isReleased ?
             <Link href={details.href} className="link font-bold">{details.title}</Link> :

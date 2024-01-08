@@ -31,7 +31,7 @@ export function SchedulePageContent() {
         </div>
     }
 
-    const schedule = getSchedule(null)
+    const schedule = getSchedule(section)
     const time = sections.find(s => s.id === section)?.time ?? "Unknown Section"
 
     return <div>

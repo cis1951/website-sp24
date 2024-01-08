@@ -1,6 +1,9 @@
 import { defineDocumentType, defineNestedType, makeSource } from 'contentlayer/source-files'
 import rehypePrism from '@mapbox/rehype-prism'
 import sections from './sections.json'
+import { readdirSync } from 'node:fs'
+import { join, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 export const Page = defineDocumentType(() => ({
     name: 'Page',
@@ -94,8 +97,8 @@ const LectureDates = defineNestedType(() => {
 
 export const Lecture = defineDocumentType(() => ({
     name: 'Lecture',
-    filePathPattern: `lectures/**/*.mdx`,
-    contentType: 'mdx',
+    filePathPattern: `lectures/*/data.yaml`,
+    contentType: 'data',
     fields: {
         title: { type: 'string', required: true },
         dates: {
@@ -105,7 +108,21 @@ export const Lecture = defineDocumentType(() => ({
         },
     },
     computedFields: {
-        slug: { type: 'string', resolve: page => page._raw.flattenedPath.slice("lectures/".length) },
+        slug: { type: 'string', resolve: page => page._raw.sourceFileDir.slice("lectures/".length) },
+        files: {
+            type: 'list',
+            resolve: page => {
+                const contents = readdirSync(join(dirname(fileURLToPath(import.meta.url)), "../../../content", page._raw.sourceFileDir))
+                return contents.filter(file => file !== "data.yaml" && !file.startsWith(".")).toSorted((a, b) => {
+                    // Sort anything that starts with "slides" first
+                    if (a.startsWith("slides") && !b.startsWith("slides")) return -1
+                    if (!a.startsWith("slides") && b.startsWith("slides")) return 1
+
+                    // Then sort by name
+                    return a.localeCompare(b)
+                })
+            },
+        }
     },
 }))
 
