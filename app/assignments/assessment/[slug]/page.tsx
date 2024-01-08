@@ -1,4 +1,4 @@
-import { allAssessments } from 'contentlayer/generated'
+import { Assessment, allAssessments } from 'contentlayer/generated'
 import { notFound } from 'next/navigation'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { mdxComponents } from '@/components/mdx'
@@ -13,12 +13,18 @@ export async function generateStaticParams() {
     }))
 }
 
+function AssessmentContent({ page }: { page: Assessment }) {
+    const MDXContent = useMDXComponent(page.body.code)
+    return <MDXContent components={mdxComponents} />
+}
+
 export default function Assessment({ params }: { params: { slug: string } }) {
     const page = allAssessments.find(page => page.slug === params.slug)
     if (!page) notFound()
 
-    const MDXContent = useMDXComponent(page.body.code)
-    const content = <MDXContent components={mdxComponents} />
+    const content = page.body ?
+        <AssessmentContent page={page} /> :
+        "This assignment hasn't been released yet."
 
     return <Card title={<h1>{page.title}</h1>}>
         <Prose>

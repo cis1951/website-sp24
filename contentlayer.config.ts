@@ -48,6 +48,13 @@ export const Homework = defineDocumentType(() => ({
     },
     computedFields: {
         slug: { type: 'string', resolve: page => page._raw.flattenedPath.slice("homework/".length) },
+        body: {
+            type: 'mdx',
+            resolve(page) {
+                if (page.isReleased) return page.body
+                return undefined
+            },
+        },
     },
 }))
 
@@ -63,13 +70,20 @@ export const Assessment = defineDocumentType(() => ({
     },
     computedFields: {
         slug: { type: 'string', resolve: page => page._raw.flattenedPath.slice("assessments/".length) },
+        body: {
+            type: 'mdx',
+            resolve(page) {
+                if (page.isReleased) return page.body
+                return undefined
+            },
+        },
     },
 }))
 
 const LectureDates = defineNestedType(() => {
     const fields = {}
     sections.forEach(section => {
-        fields[section] = { type: 'date', required: false }
+        fields[section.id] = { type: 'date', required: false }
     })
     
     return {

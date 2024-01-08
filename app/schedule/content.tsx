@@ -25,17 +25,18 @@ export function SchedulePageContent() {
         return <div className="flex flex-col items-center justify-center h-full gap-4">
             <div className="text-2xl font-bold">Please choose a section:</div>
             <div className="flex gap-4 text-xl">
-                {sections.map(section => <button key={section} className="link" onClick={() => setSectionAndStore(section)}>{section}</button>)}
+                {sections.map(section => <button key={section.id} className="link" onClick={() => setSectionAndStore(section.id)}>{section.id} ({section.time})</button>)}
             </div>
             <div className="opacity-70">You can change this later.</div>
         </div>
     }
 
-    const schedule = getSchedule(section)
+    const schedule = getSchedule(null)
+    const time = sections.find(s => s.id === section)?.time ?? "Unknown Section"
 
     return <div>
         <Card margin>
-            You're currently viewing the schedule for section <strong>{section}</strong>. <button className="link" onClick={() => {
+            You're currently viewing the schedule for section <strong>{section} ({time})</strong>. <button className="link" onClick={() => {
                 setSection(null)
             }}>Switch section...</button>
         </Card>
