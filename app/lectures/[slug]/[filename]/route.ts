@@ -23,7 +23,7 @@ const contentTypes = {
     pdf: "application/pdf",
 }
 
-export async function GET(_request: NextRequest, { params }: { params: { slug: string, filename: string } }) {
+export function GET(_request: NextRequest, { params }: { params: { slug: string, filename: string } }) {
     const lecture = allLectures.find(lecture => lecture.slug === params.slug)
     if (!lecture) return new Response("Not found", { status: 404 })
 
