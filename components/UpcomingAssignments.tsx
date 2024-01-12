@@ -16,11 +16,11 @@ export function UpcomingAssignments() {
     })
 
     if (!upcoming.length) return <div>
-        There are no upcoming assignments in the next {thresholdText}.
+        No assignments are due in the next {thresholdText}.
     </div>
 
     return <>
-        <div className="mb-4">There are {upcoming.length} {upcoming.length === 1 ? "assignment" : "assignments"} in the next {thresholdText}:</div>
+        <div className="mb-4">{upcoming.length} {upcoming.length === 1 ? "assignment is" : "assignments are"} due in the next {thresholdText}:</div>
         <ScheduleTable items={upcoming} />
     </>
 }
