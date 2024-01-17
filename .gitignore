@@ -131,3 +131,7 @@ dist
 
 out
 .contentlayer
+
+# IDEs
+.idea
+.vscode
