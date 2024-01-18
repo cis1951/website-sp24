@@ -1,6 +1,106 @@
 ---
-title: Code Style Guide
+title: Swift Style Guide
 activeMenuItem: codestyle
 ---
 
-Make it readable
+The style guide for CIS1951: iOS Development. Please use this style when writing code for this class, but it's also recommended to follow these guidelines outside the classroom as well! As usual, please write clean, readable code.
+
+Make it readable plz :sob:
+
+Also reference the [Swift API Design Guidelines](https://swift.org/documentation/api-design-guidelines/) or [this guide](https://google.github.io/swift/) for more information.
+For help, you can stick to the style of code ChatGPT would provide.
+
+## **Naming Conventions**
+
+### Syntax
+
+- Classes & Interfaces &rarr; UpperCamelCase. For example: `SchoolSchedule`
+- Methods (functions) &rarr; lowerCamelCase. For example: `dropClass()`
+- Variables &rarr; lowerCamelCase. For example: `var studentName = "Anthony"` (or `let studentName = "Anthony"` if it's constant)
+
+### Semantics
+
+- Variable names &rarr; should be a good representative of their use. Never use one-letter names (except for loop counters).
+
+  ```swift
+  // BAD
+  let x = 5
+  classMember.examScore = x
+
+  // GOOD
+  let score = 5
+  classMember.examScore = score
+  ```
+
+### Readability
+
+- Line Length &rarr; lines are at most **100** characters long (Xcode should take care of the formatting for you for the most part)
+- Vertical Spacing &rarr; add a **blank line** between methods for clarity
+- Modifiers &rarr; include modifiers on seperate lines like below
+
+  ```swift
+  struct ContentView: View {
+      var body: some View {
+          VStack {
+              Text("Hello, world!")
+                  .padding()
+                  .background(Color.red)
+              Button(action: {
+                  print("Button tapped")
+              }) {
+                  Text("Tap me!")
+              }
+          }
+      }
+  }
+  ```
+
+### Comments
+
+    Add clear comments for code that isn't quite clear what it's doing. Avoid writing too many comments that are obvious and explain exactly what a line is doing clearly.
+
+### Curly Braces & If Statements
+
+- All curly braces start on the same line as preceding code
+- `else` statements start on the same line as preceding curly brace
+- No parentheses around `if` or `else` conditions
+
+    ```swift
+    // BAD
+    func delete()
+    {
+        if (isDeleted)
+        {
+            // ...
+        }
+        else
+        {
+            // ...
+        }
+    }
+
+    // GOOD
+    func delete() {
+        if isDeleted {
+            // ...
+        } else {
+            // ...
+        }
+    }
+    ```
+
+### Semicolons
+
+- Just don't use them. It will work with them, but there's no reason. Please don't use them.
+
+### `let` vs. `var`
+
+- Only use `var` if you know the variable will change
+- Rule of thumb: declare everything as `let`, switch to `var` if you needed to change it later
+
+### Nullable Types
+
+- It is preferred to declare variables and funciton return types as nullable `?` where a `null` value can take place
+- Use `!` as a last resort _if and only if_ you are 100% sure the variable will be defined beforehand
+
+Credit to Ali Krema from CIS 1950-201 Spring 2023 for Style Guide format.
