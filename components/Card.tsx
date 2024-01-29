@@ -7,7 +7,7 @@ export type CardProps = {
 }
 
 export function Card({ title, children, margin = false }: CardProps) {
-    let className = "rounded-xl p-4 bg-neutral-50 border border-neutral-200 dark:border-neutral-700 dark:bg-neutral-800"
+    let className = "rounded-xl p-4 bg-neutral-50 border border-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 print:p-0 print:border-0 print:bg-transparent"
     if (margin) className += " mb-4"
 
     return <div className={className}>
