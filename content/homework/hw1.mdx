@@ -4,6 +4,8 @@ isReleased: true
 dueDate: 2024-02-12T23:59:00-05:00
 ---
 
+[Submit this assignment on Canvas.](https://canvas.upenn.edu/courses/1774063/assignments/12099659)
+
 Authors: [Anthony Li](https://github.com/anli5005)
 
 Reviewers: [Jordan Hochman](https://github.com/jhawk0224), [Yuying Fan](https://github.com/fyy26)
@@ -48,7 +50,7 @@ Your game should have:
 * At least 10 locations that must be traversed throughout the story
     * Locations must be reachable and appear in a playthrough
 * At least 2 possible endings
-* At least 2 items that can be picked up to affect gameplay
+* At least 1 item that can be picked up to affect gameplay
 * "north", "south", "east", and "west" commands to move between locations
 * A "help" command that lists all available commands
 
@@ -56,6 +58,7 @@ In addition, your code should contain:
 * At least 2 structs or enums to represent concepts such as locations or items
     * The adventure game struct itself does not count towards this requirement
 * At least 1 protocol that you define (see "Tips & Recipes" for examples)
+    * One of your structs, classes, or enums must conform to the protocol
 * At least 1 non-trivial use of optionals
     * For "non-trivial", you should use optionals when the `nil` case is meaningful and can occur in a live playthrough. For example, parsing a number from a string would be "non-trivial", as the string may not be a valid number. However, using [Array.first](https://developer.apple.com/documentation/swift/array/first) or similar on an array guaranteed to be non-empty would not be "non-trivial".
 * At least 1 use of arrays or dictionaries
@@ -168,20 +171,21 @@ Note that setting `attributedString.foregroundColor` (or similar properties) dir
 
 We will grade your homework based on the following rubric, out of 100 points:
 
-* **Correctness** (60 points)
-  * *20 points:* All locations present
+* **Correctness** (45 points)
+  * *10 points:* All locations present
   * *10 points:* All endings present
-  * *10 points:* All items present
+  * *5 points:* Item is implemented
   * *10 points:* All required commands implemented
   * *10 points:* All state is stored inside the game struct
-* **Use of Language Constructs** (20 points)
-  * *5 points:* Uses 2 structs
-  * *5 points:* Uses a protocol
+* **Use of Language Constructs** (40 points)
+  * *10 points:* Uses 2 structs
+  * *10 points:* Design decisions make sense for the assignment (e.g. structs are thoughtfully used instead of randomly created)
+  * *5 points:* Defines a protocol
+  * *5 points:* At least one struct, class, or enum conforms to the protocol
   * *5 points:* Uses optionals
   * *5 points:* Use of arrays or dictionaries
-* **Style** (20 points)
+* **Style** (15 points)
   * *5 points:* Code is readable (i.e. indentation and naming of symbols is reasonable)
-  * *5 points:* Design decisions make sense for the assignment (e.g. structs are thoughtfully used instead of randomly created)
   * *5 points:* README suitably answers questions about the game and requirements
   * *5 points:* README contains series of commands that lead to each ending
 * **Deductions**
@@ -195,4 +199,6 @@ We will grade your homework based on the following rubric, out of 100 points:
 
 ## Submission
 
-To submit your homework, zip (or tar.gz) **both your playground and README** and upload it to Canvas (link TBD). Make sure that you've given the requirements a quick read before you do so.
+To submit your homework, zip (or tar.gz) **both your playground and README** and [upload it to Canvas](https://canvas.upenn.edu/courses/1774063/assignments/12099659). Make sure that you've given the requirements a quick read before you do so.
+
+<a className="button not-prose mr-1" href="https://canvas.upenn.edu/courses/1774063/assignments/12099659">Submit on Canvas →</a>
