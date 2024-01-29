@@ -55,20 +55,22 @@ Your game should have:
 In addition, your code should contain:
 * At least 2 structs or enums to represent concepts such as locations or items
     * The adventure game struct itself does not count towards this requirement
-* At least 1 protocol (for example, a location protocol)
+* At least 1 protocol that you define (see "Tips & Recipes" for examples)
 * At least 1 non-trivial use of optionals
     * For "non-trivial", you should use optionals when the `nil` case is meaningful and can occur in a live playthrough. For example, parsing a number from a string would be "non-trivial", as the string may not be a valid number. However, using [Array.first](https://developer.apple.com/documentation/swift/array/first) or similar on an array guaranteed to be non-empty would not be "non-trivial".
 * At least 1 use of arrays or dictionaries
 
 **You should also fill in the README** with:
 * Brief explanations of how your code implements the requirements
-* Instructions on how to test your homework
+* Series of commands that lead to each ending
 
 All state should be stored in the adventure game struct itself, and not in a global variable. To test this, try clicking the "Reset" button. Everything in the struct should be reset to its initial state.
 
-Be sure to follow the [code style guidelines](/~cis1951/style) - we won't be grading on style too harshly, but unreadable or messy code may result in a deduction.
+Be sure to follow the [code style guidelines](/~cis1951/codestyle) - we won't be grading on style too harshly, but unreadable or messy code may be reflected in the style grade.
 
 ### Getting Started
+
+**Note:** This assignment is very design-heavy. You may find it helpful to sketch out your game's map and architecture on paper before you start coding.
 
 To get started, [download and unzip the starter code](http://github.com/cis1951/hw1-playground/zipball/main), and open up `hw1.playground`. We've included a skeleton implementation to get you started. Feel free to rename the struct or add additional methods/properties as you see fit.
 
@@ -119,20 +121,13 @@ Do **not** use `print` - your output will not appear in the correct place.
 
 To run your game, run the entirety of the playground. You'll see your game running on the right side of the screen. If you don't see it, go to the menu bar and make sure **Editor > Live View** is checked.
 
-### Grading
+## Tips & Recipes
 
-We will grade your homework based on the following criteria:
-* **Correctness** (50%): Does your game compile and work correctly? Does it meet the gameplay requirements?
-* **Use of Language Constructs** (30%): Did you use the required Swift language constructs?
-* **Design and Style** (20%): Is your code well-designed and easy to read?
-
-### Submission
-
-To submit your homework, zip (or tar.gz) **both your playground and README** and upload it to Canvas (link TBD). Make sure that you've given the requirements a quick read before you do so.
-
-## Recipes
-
-This section outlines a few snippets of code that you may find useful in your homework.
+### Structs & Protocols
+In general, any game object would make a good candidate for a struct or protocol. For example:
+* **Locations** could have a name, description, list of exits, and associated contents like items or characters
+* **Items** could have a name, description, and associated actions like "use"
+* **Characters** could have a name, description, and dialogue
 
 ### Parsing Input
 ```swift
@@ -166,3 +161,30 @@ context.write(attributedString)
 ```
 
 Note that setting `attributedString.foregroundColor` (or similar properties) directly will not work - you must use the `swiftUI` property.
+
+## Grading
+
+We will grade your homework based on the following rubric:
+
+* **Correctness** (60 points)
+  * *20 points:* All locations present
+  * *10 points:* All endings present
+  * *10 points:* All items present
+  * *10 points:* All required commands implemented
+  * *10 points:* All state is stored inside the game struct
+* **Use of Language Constructs** (20 points)
+  * *5 points:* Uses 2 structs
+  * *5 points:* Uses a protocol
+  * *5 points:* Uses optionals
+  * *5 points:* Use of arrays or dictionaries
+* **Style** (20 points)
+  * *5 points:* Code is readable (i.e. indentation and naming of symbols is reasonable)
+  * *5 points:* Design decisions make sense for the assignment (i.e. structs aren't just randomly placed)
+  * *5 points:* README suitably describes how concepts are covered
+  * *5 points:* README contains series of commands that lead to each ending
+* **Deductions**
+  * *-20 points:* Code doesn't compile
+
+## Submission
+
+To submit your homework, zip (or tar.gz) **both your playground and README** and upload it to Canvas (link TBD). Make sure that you've given the requirements a quick read before you do so.
