@@ -24,7 +24,7 @@ Write a [text adventure game](https://en.wikipedia.org/wiki/Interactive_fiction)
 
 In a text adventure game, you walk the player through an interactive story. Generally, you describe the scene and the plot, and the player types in commands to interact with the world, a bit like this (with player inputs ***<u>bolded, italicized, and underlined</u>***):
 
-<pre className="whitespace-pre-wrap">
+<pre className="whitespace-pre-wrap prose-strong:text-white">
 A flash of light. You're awake. Dazed, you look around. You're in a dark cave, with an exit to the east. You have no idea how you got here. Only one thing is certain: you have to get out.
  
 ***<u>east</u>***
@@ -40,13 +40,13 @@ All of a sudden, it hits you.
 You're trapped in a CIS 1600 homework assignment.
 </pre>
 
-Text adventure games have been around for a while, with games like [Colossal Cave Adventure](https://en.wikipedia.org/wiki/Colossal_Cave_Adventure) and [Zork](https://en.wikipedia.org/wiki/Zork) available for decades. (You can even still install `zork` on your own computer using [Homebrew](https://formulae.brew.sh/formula/zork).) Even more recent examples use AI to spice things up, like [AI Dungeon](https://aidungeon.com/). The possibilities are endless!
+Text adventure games have been around for a while, with games like [Colossal Cave Adventure](https://en.wikipedia.org/wiki/Colossal_Cave_Adventure) and [Zork](https://en.wikipedia.org/wiki/Zork) available for decades. (You can even install `zork` on your computer using [Homebrew](https://formulae.brew.sh/formula/zork).) Even more recent examples use AI to spice things up, like [AI Dungeon](https://aidungeon.com/). The possibilities are endless!
 
 ### Specific Requirements
 
 Your game should have:
 * At least 10 locations that must be traversed throughout the story
-    * Locations count so long as they are used in at least 1 ending
+    * Locations must be reachable and appear in a playthrough
 * At least 2 possible endings
 * At least 2 items that can be picked up to affect gameplay
 * "north", "south", "east", and "west" commands to move between locations
@@ -57,10 +57,12 @@ In addition, your code should contain:
     * The adventure game struct itself does not count towards this requirement
 * At least 1 protocol (for example, a location protocol)
 * At least 1 non-trivial use of optionals
-    * For "non-trivial", we mean that you should use optionals in a way that the `nil` case can occur. For example, you could use the `Int` or `Double` constructors to parse a number from the user's input -- if it returns `nil` for an invalid number, you can display an error message.
+    * For "non-trivial", you should use optionals when the `nil` case is meaningful and can occur in a live playthrough. For example, parsing a number from a string would be "non-trivial", as the string may not be a valid number. However, using [Array.first](https://developer.apple.com/documentation/swift/array/first) or similar on an array guaranteed to be non-empty would not be "non-trivial".
 * At least 1 use of arrays or dictionaries
 
-**Please leave brief comments at the top explaining how your code meets these requirements, and instructions on how to test your homework.**
+**You should also fill in the README** with:
+* Brief explanations of how your code implements the requirements
+* Instructions on how to test your homework
 
 All state should be stored in the adventure game struct itself, and not in a global variable. To test this, try clicking the "Reset" button. Everything in the struct should be reset to its initial state.
 
@@ -126,9 +128,7 @@ We will grade your homework based on the following criteria:
 
 ### Submission
 
-To submit your homework, zip (or tar.gz) your playground file and upload it to Canvas (link TBD). Make sure that:
-1. You've given the requirements another quick read, and
-2. You've left comments at the top of your code explaining how your code meets the requirements, and how to test your homework.
+To submit your homework, zip (or tar.gz) **both your playground and README** and upload it to Canvas (link TBD). Make sure that you've given the requirements a quick read before you do so.
 
 ## Recipes
 
