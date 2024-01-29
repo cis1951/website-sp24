@@ -68,6 +68,8 @@ All state should be stored in the adventure game struct itself, and not in a glo
 
 Be sure to follow the [code style guidelines](/~cis1951/codestyle) - we won't be grading on style too harshly, but unreadable or messy code may be reflected in the style grade.
 
+Don't feel the need to go overboard with your game in terms of creativity or complexity - we're more interested in how you'll apply the concepts we've learned in class. If you're stuck for ideas, you can always implement a classic like [Colossal Cave Adventure](https://en.wikipedia.org/wiki/Colossal_Cave_Adventure) or [Zork](https://en.wikipedia.org/wiki/Zork).
+
 ### Getting Started
 
 **Note:** This assignment is very design-heavy. You may find it helpful to sketch out your game's map and architecture on paper before you start coding.
@@ -164,7 +166,7 @@ Note that setting `attributedString.foregroundColor` (or similar properties) dir
 
 ## Grading
 
-We will grade your homework based on the following rubric:
+We will grade your homework based on the following rubric, out of 100 points:
 
 * **Correctness** (60 points)
   * *20 points:* All locations present
@@ -179,11 +181,17 @@ We will grade your homework based on the following rubric:
   * *5 points:* Use of arrays or dictionaries
 * **Style** (20 points)
   * *5 points:* Code is readable (i.e. indentation and naming of symbols is reasonable)
-  * *5 points:* Design decisions make sense for the assignment (i.e. structs aren't just randomly placed)
+  * *5 points:* Design decisions make sense for the assignment (e.g. structs are thoughtfully used instead of randomly created)
   * *5 points:* README suitably describes how concepts are covered
   * *5 points:* README contains series of commands that lead to each ending
 * **Deductions**
   * *-20 points:* Code doesn't compile
+
+## Extra Credit
+
+**+5 points:** Implement random outcomes/events that trigger when the player enters a location or performs an action. For this to count, the outcome must be random and not always occur.
+
+**+5 points:** Implement a dynamically updating `title` using a computed property. For example, the title could be the current location.
 
 ## Submission
 
