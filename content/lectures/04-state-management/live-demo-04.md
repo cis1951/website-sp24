@@ -2,9 +2,11 @@
 
 ## Introduction
 
-The TaskManager app is a simple demonstration of SwiftUI's capabilities for state management, including the use
-of `@State`, `@Binding`, `@ObservedObject`, and `@EnvironmentObject`. This app allows users to add tasks, mark them
-as completed, edit task details, and includes animations when reacting to state changes.
+We will do a simple demonstration of SwiftUI's capabilities for state management, including the use
+of `@State`, `@Binding`, `@ObservedObject`, and `@EnvironmentObject`, using a TODO list app. This app allows users to
+add tasks, mark them as completed, edit task details, and includes animations when reacting to state changes.
+
+You can name it however you want; pick a fun name! For now, we'll call it "TaskManager."
 
 Let's get started!
 
@@ -202,9 +204,10 @@ struct TaskItemView: View {
 
     var body: some View {
         HStack {
-            TextField("Task Name", text: $viewModel.draftName).onChange(of: viewModel.draftName) {
-                viewModel.updateTaskName()
-            }
+            TextField("Task Name", text: $viewModel.draftName)
+                    .onChange(of: viewModel.draftName) {
+                        viewModel.updateTaskName()
+                    }
             Toggle(isOn: $viewModel.task.isCompleted) {
                 EmptyView()
             }
@@ -253,7 +256,8 @@ struct TaskItemView: View {
 
     var body: some View {
         HStack {
-            TextField("Task Name", text: $viewModel.draftName).onChange(of: viewModel.draftName) {
+            TextField("Task Name", text: $viewModel.draftName)
+                    .onChange(of: viewModel.draftName) {
                         viewModel.updateTaskName()
                     }
                     .opacity(viewModel.task.isCompleted ? 0.5 : 1) // Reduced opacity when completed
