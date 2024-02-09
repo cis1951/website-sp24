@@ -254,14 +254,14 @@ struct TaskItemView: View {
     var body: some View {
         HStack {
             TextField("Task Name", text: $viewModel.draftName).onChange(of: viewModel.draftName) {
-                viewModel.updateTaskName()
-            }
+                        viewModel.updateTaskName()
+                    }
+                    .opacity(viewModel.task.isCompleted ? 0.5 : 1) // Reduced opacity when completed
+                    .animation(.default, value: viewModel.task.isCompleted) // Animate on isCompleted change
             Toggle(isOn: $viewModel.task.isCompleted) {
                 EmptyView()
             }
         }
-                .animation(.default, value: viewModel.task.isCompleted)
-                .transition(.opacity)
     }
 }
 ```
@@ -305,12 +305,12 @@ import SwiftUI
 
 @main
 struct TaskManagerApp: App {
-    var userPreferences = UserPreferences()
+    var userPreferences = UserPreferences()  // Instantiate a UserPreferences object
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                    .environmentObject(userPreferences)
+                    .environmentObject(userPreferences)  // Add the UserPreferences object to the environment
         }
     }
 }
@@ -319,26 +319,12 @@ struct TaskManagerApp: App {
 Now, we can access it from `TaskItemView` using the `@EnvironmentObject` property wrapper:
 
 ```swift
-import SwiftUI
-
-struct TaskItemView: View {
-    @EnvironmentObject var userPreferences: UserPreferences
-    @ObservedObject var viewModel: TaskViewModel
-
-    var body: some View {
-        HStack {
-            TextField("Task Name", text: $viewModel.draftName).onChange(of: viewModel.draftName) {
-                        viewModel.updateTaskName()
-                    }
-                    .foregroundColor(userPreferences.themeColor) // Use theme color for text
-            Toggle(isOn: $viewModel.task.isCompleted) {
-                EmptyView()
-            }
+TextField("Task Name", text: $viewModel.draftName).onChange(of: viewModel.draftName) {
+            viewModel.updateTaskName()
         }
-                .animation(.default, value: viewModel.task.isCompleted)
-                .transition(.opacity)
-    }
-}
+        .foregroundColor(userPreferences.themeColor) // Use theme color for text
+        .opacity(viewModel.task.isCompleted ? 0.5 : 1)
+        .animation(.default, value: viewModel.task.isCompleted)
 ```
 
 ## Conclusion
