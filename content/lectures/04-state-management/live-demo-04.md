@@ -319,12 +319,22 @@ struct TaskManagerApp: App {
 Now, we can access it from `TaskItemView` using the `@EnvironmentObject` property wrapper:
 
 ```swift
-TextField("Task Name", text: $viewModel.draftName).onChange(of: viewModel.draftName) {
-            viewModel.updateTaskName()
-        }
-        .foregroundColor(userPreferences.themeColor) // Use theme color for text
-        .opacity(viewModel.task.isCompleted ? 0.5 : 1)
-        .animation(.default, value: viewModel.task.isCompleted)
+struct TaskItemView: View {
+    @EnvironmentObject var userPreferences: UserPreferences  // Access the environment object
+    // ...
+
+    var body: some View {
+        // ...
+        TextField("Task Name", text: $viewModel.draftName)
+                .onChange(of: viewModel.draftName) {
+                    viewModel.updateTaskName()
+                }
+                .foregroundColor(userPreferences.themeColor) // Use theme color for text
+                .opacity(viewModel.task.isCompleted ? 0.5 : 1)
+                .animation(.default, value: viewModel.task.isCompleted)
+        // ...
+    }
+}
 ```
 
 ## Conclusion
