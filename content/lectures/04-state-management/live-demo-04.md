@@ -191,7 +191,8 @@ class TaskViewModel: ObservableObject {
 ```
 
 Then, update `TaskItemView` to use `TaskViewModel` as an `@ObservedObject`. This allows `TaskItemView` to respond to
-changes in the task's properties, such as its name or completion status.
+changes in the task's properties, such as its name or completion status. Note that `.onChange` is used for updating the
+task name.
 
 ```swift
 import SwiftUI
@@ -201,9 +202,9 @@ struct TaskItemView: View {
 
     var body: some View {
         HStack {
-            TextField("Task Name", text: $viewModel.task.name, onCommit: {
+            TextField("Task Name", text: $viewModel.draftName).onChange(of: viewModel.draftName) {
                 viewModel.updateTaskName()
-            })
+            }
             Toggle(isOn: $viewModel.task.isCompleted) {
                 EmptyView()
             }
@@ -221,7 +222,27 @@ List($tasks) { $task in
 }
 ```
 
-## Step 9: Implementing Basic Animations and Transitions
+## Step 9: Data Sharing: Class vs. Struct
+
+Now, you may notice that when you add a new task, all existing tasks are reset. This is because we kept a simple @State
+array of tasks which is not shared with the tasks inside the view models. To solve this, we can turn `TodoItem` from a
+struct to a class, so that it is passed by reference.
+
+```swift
+class TodoItem: Identifiable {
+    var id = UUID()
+    var name: String
+    var isCompleted: Bool
+
+    init(id: UUID = UUID(), name: String, isCompleted: Bool) {
+        self.id = id
+        self.name = name
+        self.isCompleted = isCompleted
+    }
+}
+```
+
+## Step 10: Implementing Basic Animations and Transitions
 
 We can use transitions to visually distinguish between active and completed tasks. For instance, when a task is marked
 as completed, it could fade out or move to a different section of the UI.
@@ -231,8 +252,13 @@ struct TaskItemView: View {
     @ObservedObject var viewModel: TaskViewModel
 
     var body: some View {
-        Toggle(isOn: $viewModel.task.isCompleted) {
-            Text(viewModel.task.name)
+        HStack {
+            TextField("Task Name", text: $viewModel.draftName).onChange(of: viewModel.draftName) {
+                viewModel.updateTaskName()
+            }
+            Toggle(isOn: $viewModel.task.isCompleted) {
+                EmptyView()
+            }
         }
                 .animation(.default, value: viewModel.task.isCompleted)
                 .transition(.opacity)
@@ -252,7 +278,7 @@ private func addNewTask() {
 }
 ```
 
-## Step 10: Share the Task List Using @EnvironmentObject
+## Step 11: Share the Task List Using @EnvironmentObject
 
 `@EnvironmentObject` is ideal for sharing global data, such as user preferences or themes, across multiple views without
 the need to pass them through each view explicitly.
@@ -300,10 +326,17 @@ struct TaskItemView: View {
     @ObservedObject var viewModel: TaskViewModel
 
     var body: some View {
-        Toggle(isOn: $viewModel.task.isCompleted) {
-            Text(viewModel.task.name)
+        HStack {
+            TextField("Task Name", text: $viewModel.draftName).onChange(of: viewModel.draftName) {
+                        viewModel.updateTaskName()
+                    }
                     .foregroundColor(userPreferences.themeColor) // Use theme color for text
+            Toggle(isOn: $viewModel.task.isCompleted) {
+                EmptyView()
+            }
         }
+                .animation(.default, value: viewModel.task.isCompleted)
+                .transition(.opacity)
     }
 }
 ```
