@@ -341,6 +341,12 @@ struct TaskItemView: View {
 }
 ```
 
+## Step 12: Refactoring to Use `@EnvironmentObject` for Task List
+
+Remember how we said it's bad to use classes until absolutely necessary? Here, you can keep `TodoItem` a struct by using
+a `@EnvironmentObject` to store the list of tasks. Try it out yourself! You may also find `@StateObject` useful when
+initializing the object you use to keep track of the list of tasks. 
+
 ## Conclusion
 
 Great! You've just created your first full app from scratch. You can now call yourself an iOS developer. 😎
