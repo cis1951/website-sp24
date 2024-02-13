@@ -220,7 +220,7 @@ Finally, adjust the `List` in `ContentView` to create `TaskItemView` by initiali
 corresponding `TodoItem`.
 
 ```swift
-List($tasks) { $task in
+List(tasks) { task in
     TaskItemView(viewModel: TaskViewModel(task: task))
 }
 ```
