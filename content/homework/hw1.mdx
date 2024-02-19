@@ -6,7 +6,7 @@ dueDate: 2024-02-12T23:59:00-05:00
 
 [Submit this assignment on Canvas.](https://canvas.upenn.edu/courses/1774063/assignments/12099659)
 
-Authors: [Anthony Li](https://github.com/anli5005)
+Author: [Anthony Li](https://github.com/anli5005)
 
 Reviewers: [Jordan Hochman](https://github.com/jhawk0224), [Yuying Fan](https://github.com/fyy26)
 
@@ -28,17 +28,17 @@ In a text adventure game, you walk the player through an interactive story. Gene
 
 <pre className="whitespace-pre-wrap prose-strong:text-white">
 A flash of light. You're awake. Dazed, you look around. You're in a dark cave, with an exit to the east. You have no idea how you got here. Only one thing is certain: you have to get out.
- 
+
 ***<u>east</u>***
 
 Still confused, you sprint towards the light. As you exit the cave, sunlight engulfs you. You're at the edge of a rural village. A villager rests at the side of the road.
- 
+
 ***<u>talk</u>***
- 
+
 You approach the villager. "Hello, traveler," she says. "Do you know if it's possible to get from two arbitrary but particular locations via the road network? Let G be an arbitrary but particular graph representing the road network. All I know is that G is an undirected graph with no cycles, and has exactly one fewer road than the number of locations."
 
 All of a sudden, it hits you.
- 
+
 You're trapped in a CIS 1600 homework assignment.
 </pre>
 
@@ -86,14 +86,14 @@ You'll implement your game as a struct conforming to the `AdventureGame` protoco
 public protocol AdventureGame {
     /// Creates a new game.
     init()
-    
+
     /// Title to be displayed at the top of the game.
     var title: String { get }
-    
+
     /// Runs at the start of every game.
     /// - Parameter context: The object you use to write output and end the game.
     mutating func start(context: AdventureGameContext)
-    
+
     /// Runs when the user enters a line of input.
     /// - Parameters:
     ///   - input: The line the user typed.
