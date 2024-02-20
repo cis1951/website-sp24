@@ -1,6 +1,354 @@
 ---
-title: "HW2: Views, Navigation, State Management"
-isReleased: false
-releaseDate: 2024-02-19T00:00:00-05:00
+title: "HW2: Trivia Game"
+isReleased: true
 dueDate: 2024-03-11T23:59:00-04:00
 ---
+
+Author: [Yuying Fan](https://github.com/fyy26)
+
+Reviewers: [Anthony Li](https://github.com/anli5005), [Jordan Hochman](https://github.com/jhawk0224)
+
+Please leave feedback by posting on Ed or contacting the [course staff](/).
+
+**Required Software:** macOS Ventura, Xcode 15
+
+**Deadline:** <FormattedDate date={new Date("2024-03-11T23:59:00-04:00")} format="EEEE, M/d @ p" />
+
+## Introduction
+
+In this assignment, you will create a trivia game application using SwiftUI. This project will
+consolidate your understanding of UI components, state management, navigation, and app design by
+applying them to a real-world interactive application. We have laid out some basic requirements and
+a high-level guide to get you started, but the design and implementation are up to you. Pick your
+favorite trivia topic and have fun!
+
+## Requirements
+
+Your game application should include:
+
+### Screens
+
+- **Welcome Screen**: Title, instructions, and a start button.
+- **Question Screen**: Display the current question and the answer options.
+- **Score Screen**: Show final score and buttons to restart the game or navigate back home.
+
+### Components & Layout
+
+- Use `Text`, `Image`, `Button`, `VStack`, and `List` (to display the list of answer choices, for
+example).
+- Apply modifiers for styling (font, color, padding).
+
+### State Management
+
+- Utilize `@State` and `@Binding` to manage and pass simple data within and between views.
+- Make an `ObservableObject` to and use it to manage the game state, such as current question,
+selected answer, and score. Use `@Published` to update the UI when the state changes.
+
+### Navigation
+
+- Use `NavigationStack` and `NavigationLink` for screen transitions.
+
+### App Design
+
+Implement the Model-View-ViewModel (MVVM) architecture to separate the game logic from the UI.
+
+- **Model**: You should have a `Question` model that represents a single question.
+- **ViewModel**: You should have a `QuizViewModel` that manages the game state.
+- **View**: Multiple views that make up an interactive game UI.
+
+### Game Logic
+
+Track and update questions, answers, and scores.
+
+### Beyond the Basics
+
+The above are simply some minimum requirements for us to grade your game. We encourage you to add
+more features and polish your game as much as you like!
+
+## Instructions
+
+Below are some steps to help you get started with your project. You are encouraged to deviate from
+these steps and add your own features, as long as you still satisfy the requirements listed above.
+
+### Step 1: Design Your App
+
+1. **Choose Your Topic**: Pick a topic for your trivia game. This could be something broad like "
+World History" or more niche like "Penn CIS Faculties." Consider your interests or areas where
+you
+have special knowledge.
+2. **Sketch Your Screens**: Draw the layout of your three main screens (Welcome, Question, and
+Score)
+on paper or [Figma](https://www.figma.com) (we'll talk about this more in our App Design week).
+Identify how you'll satisfy each of the requirements above.
+3. **Plan Your Game Logic**: Think about how the game will flow from one question to the next, how
+you'll store the questions and answers, and how the score will be calculated.
+4. **Storyboard Your Navigation**: Plan how users will move from one screen to another. Will they go
+straight from the Welcome Screen to the first question, or you place instructions as a separate
+screen in between? How will they get from the last question to the Score Screen?
+
+### Step 2: Set Up Your Project
+
+1. **Create a New SwiftUI Project**:
+   - Open Xcode and select "Create New Project..."
+   - Select the iOS App template and fill in your project details. Make sure to select SwiftUI as
+  the interface.
+   - Choose a location to save your project in and create it.
+2. **Organize Your Files**:
+   - Create groups (File > New > Group) for your Views, Models, and ViewModels.
+   - Inside the Views group, create new SwiftUI View files for your `WelcomeView`, `QuestionView`,
+  and `ScoreView`.
+   - In the Models group, create a new Swift file for your `Question` data model.
+   - In the ViewModels group, create a new Swift file for your `QuizViewModel`, which will manage
+  the state of your quiz. This class likely conforms to `ObservableObject`.
+
+### Step 3: Define Your Data Model
+
+- Define a `Question` struct that represents a single question in your trivia game. It should
+have properties for the question text, question image, answer options, and the correct answer.
+- Here's an example of what your `Question` struct might look like:
+
+   ```swift
+   struct Question {
+     var text: String // The question text
+     var imageName: String // Name of the local image file associated with the question
+     var answers: [String] // The possible answers
+     var correctAnswer: String // The correct answer
+   }
+   ```
+
+### Step 4: Create the UI
+
+We now proceed to create the UI for the three main screens of your trivia game: the Welcome Screen,
+the Question Screen, and the Score Screen. Use dummy data for now to test your UI components.
+
+1. **Develop the Welcome Screen**:
+
+   - **Layout**: Use a `VStack` to vertically stack your `Text` and `Button` elements. This will be
+  your welcome message and the button to start the game.
+   - **Text Elements**: Create `Text` views for your game's title and brief instructions. Apply
+  font modifiers to adjust the size and weight to make them stand out.
+   - **Start Button**: Implement a `Button` that says "Start Quiz" or similar. Use this button to
+  navigate to the Question Screen. Style the button with padding, background, and font modifiers
+  to make it visually appealing.
+
+2. **Set Up Navigation**:
+
+   - **NavigationStack**: Wrap your Welcome Screen view in a `NavigationStack`. This enables
+  navigation between screens in your app.
+   - **NavigationLink**: Within your `VStack` on the Welcome Screen, add a `NavigationLink` that
+  leads to the Question Screen. The destination should be your `QuestionView`.
+  The `NavigationLink` should be activated by the Start Button, providing a seamless transition
+  to the quiz.
+
+3. **Design the Question Screen**:
+
+   - **Question and Answers Layout**: Use any single or combination of `VStack`, `HStack`, or
+  `ZStack` to lay out your question and answer options. The question should be at the top,
+  followed by the answer options listed below. Use a `List` to display the answer options.
+   - **Displaying Questions and Answers**: Use `Text` views for displaying the question and each
+  answer option. Ensure the text is legible and well-spaced for easy readability.
+   - **Answer Buttons**: Convert each answer option into a `Button`. These buttons should have
+  action handlers that determine what happens when an answer is selected (e.g., display the
+  correct answer, update the score, move to the next question).
+   - **Styling**: Apply modifiers to your `Text` and `Button` components to align with your app's
+  design theme.
+
+4. **Create the Score Screen**:
+
+   - **Display Score**: Use a `Text` view to display the player's score. You might also include
+  a message that vary with the score (e.g., "Great job!" for high scores).
+   - **Restart and Home Buttons**: Provide `Button` components for restarting the game or returning
+  to the Welcome Screen.
+   - **Styling and Layout**: As with the other screens, use `VStack`s and modifiers to style and
+  position your components.
+
+5. **Implement Basic Navigation**:
+
+   - Ensure your `NavigationLink`s are properly set up to move between the Welcome, Question, and
+  Score screens. Test the flow to make sure buttons take you to the correct screens.
+
+### Step 5: Implement Game Logic and State Management
+
+1. **Set Up Your ViewModel**:
+
+   - Without diving deep into the logic, draft the structure of your `QuizViewModel` class. This
+  class will manage the game state and logic, including the current question, selected answer,
+  and score.
+   - Initialize your `QuizViewModel` as a `@StateObject` in your main game view (typically the
+  first screen of your game, such as the Welcome Screen). This ensures the state is retained
+  throughout the lifecycle of the view.
+   - Here is an example of what your `QuizViewModel` might look like:
+
+    ```swift
+    import Foundation
+
+    class QuizViewModel: ObservableObject {
+      // MARK: - Properties
+      @Published var questions: [Question] = [] // Array to store questions
+      @Published var currentQuestionIndex: Int = 0 // Index of the current question
+      @Published var selectedAnswer: String? = nil // The user's selected answer
+      @Published var score: Int = 0 // The user's score
+      @Published var quizFinished: Bool = false // Flag to determine if the quiz has finished
+
+      // MARK: - Initialization
+      init() {
+        loadQuestions() // Call to load questions into the array
+      }
+
+      // MARK: - Methods
+
+      /// Initializes questions array with data.
+      func loadQuestions() {
+        // Hard-coded questions with local images
+        self.questions = [
+          // Add questions here. Example:
+                      // Add questions here. Example:
+            // Question(text: "What is not a valid source of images in SwiftUI?",
+            //          imageName: "swift-image",
+            //          answers: ["System Icon", "Image Name", "URL", "Doodle on My Desk"],
+            //          correctAnswer: "Doodle on my desk")
+        ]
+      }
+
+      /// Processes the selected answer, updates the score and advances to the next question.
+      func submitAnswer() {
+        // Functionality to be implemented: check the selected answer, update score, move to next question or finish quiz.
+      }
+
+      /// Resets the quiz to its initial state for a new game.
+      func resetQuiz() {
+        // Functionality to be implemented: reset current question index, score, and quiz finished status; reload questions.
+      }
+    }
+    ```
+
+2. **Implement the Quiz Logic**:
+
+   - **Load Questions**: In your `QuizViewModel`, write a method to load questions into your
+  questions array. This can be from a static array for now, but you may revisit the app later in
+  the course to replace it with a method that fetches questions from an API or database.
+   - **Answer Submission**: Create a function in the ViewModel to handle answer submission. This
+  function should compare the selected answer with the correct answer, update the score
+  accordingly, and advance to the next question.
+   - **Progress Tracking**: Use the `currentQuestionIndex` to keep track of which question the user
+  is on. This will help you fetch the current question from the questions array and display it
+  on the Question Screen.
+   - **Score Calculation**: Every time an answer is submitted, calculate the score based on whether
+  the answer was correct. Keep track of the total score within a score property.
+
+3. **Bind ViewModel to Views**:
+
+   - In the Question Screen, use the current question index from your ViewModel to display the
+  question text and answer choices.
+   - Set up answer buttons in such a way that when clicked, they update the ViewModel's
+  `selectedAnswer` and call the method to submit the answer.
+   - Display the current score and question number in your UI, updating them as the game
+  progresses.
+
+4. **Handle Game Completion**:
+
+   - The game should end when all questions have been answered. In your ViewModel, you can check
+  if the `currentQuestionIndex` is equal to the length of your questions array minus one.
+   - When the game ends, update a `quizFinished` boolean flag in your ViewModel to true.
+   - React to the `quizFinished` state in your views to navigate the user to the Score Screen when
+  all questions have been answered.
+
+5. **Resetting the Game**:
+
+   - In your `QuizViewModel`, implement a `resetQuiz` method that resets
+  the `currentQuestionIndex`, `score`, and `quizFinished` status, and reloads the questions.
+  This allows the user to start a new game once they have finished.
+   - Make the "Restart" button in your Score Screen call this `resetQuiz` method to allow users to
+  play again from the beginning without having to restart the app.
+
+### Step 6: Test and Debug
+
+- As you implement the logic, test each functionality separately and together to ensure they work as
+expected.
+- Click through your app to make sure the navigation works as expected.
+- Check for common pitfalls like off-by-one errors, incorrect state updates, or UI elements not
+reacting to state changes.
+- Use Xcode's debugger and print statements to help identify and fix issues.
+
+## Grading
+
+This assignment is out of 100 points, with the following breakdown:
+
+### Screens (20 points)
+
+#### Welcome Screen (5 points):
+
+* Includes a title, instructions, and a start button (3 points).
+* Functional start button that navigates to the Question Screen (2 points).
+* *Note:* The Welcome Screen can be split into two screens if you choose to have a separate
+instructions screen.
+
+#### Question Screen (10 points):
+
+* Displays the current question text correctly (2 points).
+* Displays the current question image correctly (2 points).
+* Displays the answer options correctly (3 points).
+* Allows user to select an answer (3 points).
+
+#### Score Screen (5 points):
+
+* Correctly displays the final score (1 point).
+* Functional button to restart the game (2 points).
+* Functional button to navigate back home (2 points).
+
+### Components & Layout (15 points)
+
+* Effective use of `Text`, `Image`, `Button`, `VStack`, and `List` components across all screens (2
+points each, 10 points total).
+* Consistent and appealing use of modifiers for styling (5 points).
+
+### State Management (25 points)
+
+* Proper use of `@State` to manage data locally within a view (5 points).
+* Proper use of `@Binding` to pass data to a child or sibling view (5 points).
+* Effective implementation of an `ObservableObject` for managing the game state, with `@Published`
+properties triggering UI updates (10 points).
+* Correct use of `@ObservedObject` or `@StateObject` in views to observe the game state changes (5
+points).
+
+### Navigation (10 points)
+
+1. Correct implementation of `NavigationStack` and `NavigationLink` for smooth screen transitions
+(5 points).
+2. Logical and user-friendly navigation flow (5 points).
+
+### App Design and MVVM Architecture (20 points)
+
+* **Model**: Well-structured `Question` model representing each question (5 points).
+* **ViewModel**: Robust `QuizViewModel` managing game logic and state, with appropriate
+encapsulation of
+game logic and separation of concerns (10 points).
+* **View**: Efficient display of game state, correctly using `@StateObject` and/or `@ObservedObject`
+to
+initialize and connect to the ViewModel (5 points).
+
+### Game Logic (10 points)
+
+- Correct tracking and updating of questions, answers, and scores throughout the game (10 points).
+
+## Extra Credits
+
+- **Animations/Transitions (+5)**: Add at least two animations/transitions to your app to make it
+more interactive and engaging. For example, you can add a fade-in transition when the user
+navigates to the next question, or a shake animation when the user selects the wrong answer.
+- **Sound Effects (+5)**: Add sound effects to your app to make it more immersive. For example, you
+can play a "correct" sound when the user selects the right answer, or a "wrong" sound when they
+select the wrong answer.
+- **Timer (+5)**: Add a timer to your game to limit the time the user has to answer each question.
+When the timer runs out, the game should automatically move to the next question.
+- **Advanced UI (+5)**: Explore at least one UI component not covered in class and incorporate it
+into your app. For example, a `Picker` to select the difficulty level of the quiz, or a `Slider`
+to adjust the volume of the sound effects.
+
+## Submission
+
+To submit your homework, zip (or tar.gz) of your **entire XCode project folder**
+and [upload it to Canvas](https://canvas.upenn.edu/courses/1774063/assignments/12167030). Make sure
+that you've given the requirements another read before you do so.
+
+<a className="button not-prose mr-1" href="https://canvas.upenn.edu/courses/1774063/assignments/12167030"> Submit on Canvas →</a>
