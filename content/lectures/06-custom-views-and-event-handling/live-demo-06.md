@@ -7,7 +7,7 @@ Here's a walkthrough of the steps we cover in lecture:
 
 ## Step 0: Create a new XCode project. You can call it BubbleGame if you wish (store it in the `apps` directory).
 
-## Step 1: Lets now first start by defining a model for our bubbles. We will probably want to store their size, position, color, and maybe some other properties later. So for now, lets make a file called `BubbleModel.swift` with the following struct. Note that we want it to conform to `Identifiable` to make our lives easier in the future, and all of the other properties are declared with `var` in case we want to change them later. Don't worry too much about the `CGFloat` type, just think of it as a normal float (it changes its precision based on the device, but you don't need to worry about this). This is the data type that many views and modifiers dealing with coordinates in SwiftUI use.
+## Step 1: Let's now first start by defining a model for our bubbles. We will probably want to store their size, position, color, and maybe some other properties later. So for now, let's make a file called `BubbleModel.swift` with the following struct. Note that we want it to conform to `Identifiable` to make our lives easier in the future, and all of the other properties are declared with `var` in case we want to change them later. Don't worry too much about the `CGFloat` type, just think of it as a normal float (it changes its precision based on the device, but you don't need to worry about this). This is the data type that many views and modifiers dealing with coordinates in SwiftUI use.
 
 ```swift
 struct Bubble: Identifiable {
@@ -19,7 +19,7 @@ struct Bubble: Identifiable {
 }
 ``` 
 
-## Step 2: Now lets create the main view. In `ContentView`, let's start by adding a button to start the game. We'll also want to add a `ZStack` to put the bubbles on below the button, and let's give the `ZStack` an infinite maxWidth and maxHeight so it takes up the whole screen. So it will start something like this:
+## Step 2: Now let's create the main view. In `ContentView`, let's start by adding a button to start the game. We'll also want to add a `ZStack` to put the bubbles on below the button, and let's give the `ZStack` an infinite maxWidth and maxHeight so it takes up the whole screen. So it will start something like this:
 
 ```swift
 struct ContentView: View {
@@ -34,7 +34,7 @@ struct ContentView: View {
 }
 ```
 
-Now let's customize the button a little bit, using what you learned about SwiftUI shapes! Let's add a `Capsule` as the background for the button, and give it some styling so it looks nicer. We will fill this button with a blue background.
+Now let's customize the button a little bit, using what you learned about SwiftUI shapes! Let's add a `Capsule` as the background for the button, and give it some styling so it looks nicer.
 
 ```swift
 struct ContentView: View {
@@ -43,21 +43,16 @@ struct ContentView: View {
             Button(action: {}) {
                 Text("Start Game")
                     .font(.title)
-                    .foregroundColor(Color.white)
-                    .padding()
-                    .frame(maxWidth: 200, alignment: .center)
-                    .background(
-                        Capsule()
-                            .fill(.blue)
-                    )
             }
+            .buttonBorderShape(.capsule)
+            .buttonStyle(.borderedProminent)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 ```
 
-## Step 3: Now lets add the logic to actually start the game. To do this, we will want 2 things, first a variable to store whether or not the game has started, and also a variable to store the list of bubbles. Therefore we will add these two variables to the top of `ContentView`. They should also be `@State` properties since this view "owns" them and needs to update its UI when they change. Now lets also only show the button to start the game if it hasn't been started yet, like so:
+## Step 3: Now let's add the logic to actually start the game. To do this, we will want 2 things, first a variable to store whether or not the game has started, and also a variable to store the list of bubbles. Therefore we will add these two variables to the top of `ContentView`. They should also be `@State` properties since this view "owns" them and needs to update its UI when they change. Now let's also only show the button to start the game if it hasn't been started yet, like so:
 
 ```swift
 struct ContentView: View {
@@ -70,14 +65,9 @@ struct ContentView: View {
                 Button(action: {}) {
                     Text("Start Game")
                         .font(.title)
-                        .foregroundColor(Color.white)
-                        .padding()
-                        .frame(maxWidth: 200, alignment: .center)
-                        .background(
-                            Capsule()
-                                .fill(.blue)
-                        )
                 }
+                .buttonBorderShape(.capsule)
+                .buttonStyle(.borderedProminent)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -85,7 +75,7 @@ struct ContentView: View {
 }
 ```
 
-Now when this button is clicked, we want to generate the bubbles, and then start the game. Lets make a function called `startGame` to handle this for us, so it will set `gameStarted = true` and for now, generate 10 bubbles randomly. Lets make the size random from 20 to 50, and have them appear anywhere on the screen. For now, you can use `UIScreen.main.bounds.width` to get the width of the screen, but we will change this later. Note that (0, 0) is in the TOP LEFT of the screen, and positive y goes downwards.
+Now when this button is clicked, we want to generate the bubbles, and then start the game. Let's make a function called `startGame` to handle this for us, so it will set `gameStarted = true` and for now, generate 10 bubbles randomly. Let's make the size random from 20 to 50, and have them appear anywhere on the screen. For now, you can use `UIScreen.main.bounds.width` to get the width of the screen, but we will change this later. Note you should NEVER use `UIScreen.main` for layout, and we will fix this later (it won't work on some platforms, and it contradicts the idea of views). Note that (0, 0) is in the TOP LEFT of the screen, and positive y goes downwards.
 
 Thus the function looks like:
 
@@ -103,7 +93,7 @@ private func startGame() {
 }
 ```
 
-Now we actually need to call this function when the button is clicked. We can do this by adding the `startGame` function to the `Button`'s `action` parameter. Additionally, lets show the bubbles on the screen. So for each bubble, lets draw a `Circle()` with fill color of the button's color, and set its position, like so:
+Now we actually need to call this function when the button is clicked. We can do this by adding the `startGame` function to the `Button`'s `action` parameter. Additionally, let's show the bubbles on the screen. So for each bubble, let's draw a `Circle()` with fill color of the button's color, and set its position, like so:
 
 ```swift
 var body: some View {
@@ -121,21 +111,16 @@ var body: some View {
             }) {
                 Text("Start Game")
                     .font(.title)
-                    .foregroundColor(Color.white)
-                    .padding()
-                    .frame(maxWidth: 200, alignment: .center)
-                    .background(
-                        Capsule()
-                            .fill(.blue)
-                    )
             }
+            .buttonBorderShape(.capsule)
+            .buttonStyle(.borderedProminent)
         }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
 }
 ```
 
-## Step 4: Now we actually want to remove the bubbles when they are clicked, or on some other gesture. Lets start with a simple `onTapGesture`. Lets add the following function to remove a bubble, and reset the game if there's none left:
+## Step 4: Now we actually want to remove the bubbles when they are clicked, or on some other gesture. Let's start with a simple `onTapGesture`. Let's add the following function to remove a bubble, and reset the game if there's none left:
 
 ```swift
 private func removeBubble(_ bubble: Bubble) {
@@ -195,7 +180,7 @@ ForEach(bubbles) { bubble in
 }
 ```
 
-## Step 7: Now lets fix the issue mentioned earlier about bubbles spawning too close to the screen border. We could fix this by just subtracting some padding from the border of the screen (e.g. `UIScreen.main.bounds.width - 50`), but this is not very scalable. Instead, we will create a View that represents our entire game board, and then use GeometryReader to get the size of the view and use that to spawn the bubbles. To do this, lets do a decent amount of refactoring. First, create a new file called `GameAreaView.swift`. This file will contain a new struct called `GameAreaView` that will be a `View` and will represent the entire playable game board. Lets move the definition of the bubbles array inside this struct, since we only care about that array here. Additionally lets move the `startGame` and `removeBubble` logic inside this view so we have something like:
+## Step 7: Now let's fix the issue mentioned earlier about bubbles spawning too close to the screen border. We could fix this by just subtracting some padding from the border of the screen (e.g. `UIScreen.main.bounds.width - 50`), but this is not very scalable. Instead, we will create a View that represents our entire game board, and then use GeometryReader to get the size of the view and use that to spawn the bubbles. To do this, let's do a decent amount of refactoring. First, create a new file called `GameAreaView.swift`. This file will contain a new struct called `GameAreaView` that will be a `View` and will represent the entire playable game board. Let's move the definition of the bubbles array inside this struct, since we only care about that array here. Additionally let's move the `startGame` and `removeBubble` logic inside this view so we have something like:
 
 ```swift
 struct GameAreaView: View {
@@ -235,7 +220,7 @@ struct GameAreaView: View {
 }
 ```
 
-Now notice that we still probably want the `@State var gameStarted` defined in the `ContentView`, so lets leave it there, but we will need access to it in this `GameAreaView`. Also, since we modify its value in the `GameAreaView`, we will need it to be a binding variable. Thus we can add
+Now notice that we still probably want the `@State var gameStarted` defined in the `ContentView`, so let's leave it there, but we will need access to it in this `GameAreaView`. Also, since we modify its value in the `GameAreaView`, we will need it to be a binding variable. Thus we can add
 
 ```swift
 @Binding var gameStarted: Bool
@@ -329,14 +314,9 @@ struct ContentView: View {
                 }) {
                     Text("Start Game")
                         .font(.title)
-                        .foregroundColor(Color.white)
-                        .padding()
-                        .frame(maxWidth: 200, alignment: .center)
-                        .background(
-                            Capsule()
-                                .fill(.blue)
-                        )
                 }
+                .buttonBorderShape(.capsule)
+                .buttonStyle(.borderedProminent)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -344,7 +324,7 @@ struct ContentView: View {
 }
 ```
 
-## Step 8: Finally we can use the `GeometryReader` to get the size of the view and use that to spawn the bubbles. In `GameAreaView`, wrap the `ZStack` with `GeometryReader { proxy in`. Now lets pass in the size of the view into the `startGame` function so that we know where to spawn the bubbles. Modify `startGame` so it takes in a `size: CGSize`. The type `CGSize` is effectively an ordered pair of `CGFloats`, but it has some other properties if you want to use those. Now lets modify `startGame` to be
+## Step 8: Finally we can use the `GeometryReader` to get the size of the view and use that to spawn the bubbles. In `GameAreaView`, wrap the `ZStack` with `GeometryReader { proxy in`. Now let's pass in the size of the view into the `startGame` function so that we know where to spawn the bubbles. Modify `startGame` so it takes in a `size: CGSize`. The type `CGSize` is effectively an ordered pair of `CGFloats`, but it has some other properties if you want to use those. Now let's modify `startGame` to be
 
 ```swift
 private func startGame(size: CGSize) {
@@ -364,7 +344,7 @@ Notice now we are randomly making the `x` and `y` positions based on the size of
 
 You should now be able to play the game without worrying about the screen bounds!
 
-## Step 9: Now lets add different types of bubbles. When creating them, randomly decide between two types, swipe bubbles and tap bubbles. For tap bubbles, randomly generate a number from 1 to 3, and this will be the number of total times they have to be tapped. For swipe bubbles, randomly generate an angle from 0 to 360, which represents the direction they have to swipe the bubbles. Modify the bubble struct like so to support this:
+## Step 9: Now let's add different types of bubbles. When creating them, randomly decide between two types, swipe bubbles and tap bubbles. For tap bubbles, randomly generate a number from 1 to 3, and this will be the number of total times they have to be tapped. For swipe bubbles, randomly generate an angle from 0 to 360, which represents the direction they have to swipe the bubbles. Modify the bubble struct like so to support this:
 
 ```swift
 struct Bubble: Identifiable {
@@ -384,31 +364,48 @@ struct Bubble: Identifiable {
 }
 ```
 
-The `CaseIterable` protocal will just let us randomly select one of those cases when generating a bubble. Also change the start game function to generate these values randomly:
+The `CaseIterable` protocal will just let us randomly select one of those cases when generating a bubble. Now let's create an initialization for the bubble inside the `Bubble` struct, one that's given parameters, and one that initializes randomly like so:
+
+```swift
+public init(color: Color, x: CGFloat, y: CGFloat, size: CGFloat, type: BubbleType, swipeAngle: Angle? = nil, tapCount: Int? = nil) {
+    self.color = color
+    self.x = x
+    self.y = y
+    self.size = size
+    self.type = type
+    self.swipeAngle = swipeAngle
+    self.tapCount = tapCount
+}
+
+public init(color: Color, boundry: CGSize) {
+    self.color = color
+    self.size = CGFloat.random(in: 20...50)
+    self.x = CGFloat.random(in: self.size...boundry.width - self.size)
+    self.y = CGFloat.random(in: self.size...boundry.height - self.size)
+    self.type = BubbleType.allCases.randomElement()!
+    
+    switch self.type {
+    case .swipe:
+        self.swipeAngle = Angle(degrees: Double.random(in: -180...180))
+    case .tap:
+        self.tapCount = Int.random(in: 1...3)
+    }
+}
+```
+
+Now we can change the start game function to generate these bubbles really easily:
 
 ```swift
 private func startGame(size: CGSize) {
     bubbles.removeAll()
     
     for _ in 1...10 {
-        let bubbleSize = CGFloat.random(in: 20...50)
-        let x = CGFloat.random(in: bubbleSize...size.width - bubbleSize)
-        let y = CGFloat.random(in: bubbleSize...size.height - bubbleSize)
-        let bubbleType = Bubble.BubbleType.allCases.randomElement()!
-        
-        switch bubbleType {
-        case .swipe:
-            let swipeAngle = Angle(degrees: Double.random(in: -180...180))
-            bubbles.append(Bubble(color: Color.blue, x: x, y: y, size: bubbleSize, type: bubbleType, swipeAngle: swipeAngle))
-        case .tap:
-            let tapCount = Int.random(in: 1...3)
-            bubbles.append(Bubble(color: Color.blue, x: x, y: y, size: bubbleSize, type: bubbleType, tapCount: tapCount))
-        }
+        bubbles.append(Bubble(color: Color.blue, boundry: size))
     }
 }
 ```
 
-## Step 10: Now lets change the BubbleView based on the type. If it is type `tap`, lets just add the number to the center. If it's type `swipe`, lets add an arrow in the corresponding direction, like so:
+## Step 10: Now let's change the BubbleView based on the type. If it is type `tap`, let's just add the number to the center. If it's type `swipe`, let's add an arrow in the corresponding direction, like so:
 
 ```swift
 struct BubbleView: View {
@@ -437,9 +434,35 @@ struct BubbleView: View {
 }
 ```
 
-While we're here, modify the background so it's something cool! Maybe add different Strokes to the border, maybe make it an image, do something fun!
+While we're here, modify the background so it's something cool! Maybe add different Strokes to the border, maybe make it an image, do something fun! We'll use the following:
 
-## Step 11: Finally we're ready to add the gesture recognition! Lets first modify `removeBubble` and rename it to `tryRemoveBubble`, and have it take in two optional parameters `taps` and `angle`. This function will be called by the gesture handlers later, one will pass in the number of taps, and the other the angle of the swipe. Now if the bubble has type `tap`, we should decrement the total number of taps left, and if it reaches 0, remove it. If the bubble has type `swipe`, we should check that the input angle is within 30 degrees of the bubbles required angle like so:
+```swift
+struct BubbleView: View {
+    var bubble: Bubble
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(RadialGradient(colors: [bubble.color.opacity(0.3), bubble.color], center: UnitPoint(x: 0.2, y: 0.2), startRadius: bubble.size * 0.05, endRadius: bubble.size))
+                .strokeBorder(bubble.color, lineWidth: 3)
+            
+            if bubble.type == .tap {
+                Text("\(bubble.tapCount ?? 1)")
+            } else {
+                Image(systemName: "arrow.right")
+                    .rotationEffect(bubble.swipeAngle ?? Angle(degrees: 0))
+            }
+        }
+        .fontDesign(.rounded)
+        .fontWeight(.bold)
+        .foregroundStyle(.white)
+        .frame(width: bubble.size, height: bubble.size)
+        .position(x: bubble.x, y: bubble.y)
+    }
+}
+```
+
+## Step 11: Finally we're ready to add the gesture recognition! Let's first modify `removeBubble` and rename it to `tryRemoveBubble`, and have it take in two optional parameters `taps` and `angle`. This function will be called by the gesture handlers later, one will pass in the number of taps, and the other the angle of the swipe. Now if the bubble has type `tap`, we should decrement the total number of taps left, and if it reaches 0, remove it. If the bubble has type `swipe`, we should check that the input angle is within 30 degrees of the bubbles required angle like so:
 
 ```swift
 private func tryRemoveBubble(_ bubble: Bubble, taps: Int = 0, angle: Angle = Angle(degrees: 0)) {
@@ -482,6 +505,23 @@ BubbleView(bubble: bubble)
     )
 ```
 
-Note the minimumDistance, which is the smallest distance for that gesture to trigger the activation. Then, once this gesture ends, we take the value's translation to calculate the angle of the drag. Then this angle is passed into the `tryRemoveBubble` function.
+Note the minimumDistance, which is the smallest distance for that gesture to trigger the activation. Then, once this gesture ends, we take the value's translation to calculate the angle of the drag. Then this angle is passed into the `tryRemoveBubble` function. Now if you try it out, you will notice that the bubbles just pop into and out of existence. Let's give it a nice animation. To do this, it's really simple. Just wrap the `tryRemoveBubble` in a `withAnimation` like so:
 
-## Celebrate! You're now done with a cool game! If you have extra time and are still interested in doing more, try adding a score counter, sound effects, or maybe a timer to have the player race!
+```swift
+BubbleView(bubble: bubble)
+    .onTapGesture {
+        withAnimation {
+            tryRemoveBubble(bubble, taps: 1)
+        }
+    }
+    .gesture(DragGesture(minimumDistance: 3.0, coordinateSpace: .local)
+        .onEnded { value in
+            let angle = atan2(value.translation.height, value.translation.width)
+            withAnimation {
+                tryRemoveBubble(bubble, angle: Angle(radians: angle))
+            }
+        }
+    )
+```
+
+## Now celebrate! You're done with a cool game! If you have extra time and are still interested in doing more, try adding a score counter, sound effects, or maybe a timer to have the player race! Try making the game look better!
