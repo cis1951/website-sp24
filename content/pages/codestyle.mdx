@@ -3,20 +3,19 @@ title: Swift Style Guide
 activeMenuItem: codestyle
 ---
 
-The style guide for CIS1951: iOS Development. Please use this style when writing code for this class, but it's also recommended to follow these guidelines outside the classroom as well! As usual, please write clean, readable code.
+Please stick to this style when writing code for this class; it's also recommended to follow these same guidelines outside the classroom! TLDR, always write clean, readable code.
 
 Make it readable plz :sob:
 
 Also reference the [Swift API Design Guidelines](https://swift.org/documentation/api-design-guidelines/) or [this guide](https://google.github.io/swift/) for more information.
-For help, you can stick to the style of code ChatGPT would provide.
 
 ## **Naming Conventions**
 
 ### Syntax
 
-- Classes & Interfaces &rarr; UpperCamelCase. For example: `SchoolSchedule`
-- Methods (functions) &rarr; lowerCamelCase. For example: `dropClass()`
-- Variables &rarr; lowerCamelCase. For example: `var studentName = "Anthony"` (or `let studentName = "Anthony"` if it's constant)
+- Classes & Interfaces &rarr; UpperCamelCase. e.g. `SchoolSchedule`
+- Methods (functions) &rarr; lowerCamelCase. e.g. `dropClass()`
+- Variables &rarr; lowerCamelCase. e.g. `let studentName = "Anthony"` or `var studentName = "Anthony"`
 
 ### Semantics
 
@@ -34,17 +33,17 @@ For help, you can stick to the style of code ChatGPT would provide.
 
 ### Readability
 
-- Line Length &rarr; lines are at most **100** characters long (Xcode should take care of the formatting for you for the most part)
-- Vertical Spacing &rarr; add a **blank line** between methods for clarity
-- Modifiers &rarr; include modifiers on seperate lines like below
+- Line Length &rarr; lines are at most **100** characters long (Xcode should take care of the formatting for you for the most part).
+- Vertical Spacing &rarr; add a **blank line** between methods for clarity.
+- Modifiers &rarr; include modifiers on seperate lines like below:
 
   ```swift
   struct ContentView: View {
       var body: some View {
           VStack {
               Text("Hello, world!")
-                  .padding()
-                  .background(Color.red)
+                  .padding()  // its own line
+                  .background(Color.red)  // its own line
               Button(action: {
                   print("Button tapped")
               }) {
@@ -57,13 +56,15 @@ For help, you can stick to the style of code ChatGPT would provide.
 
 ### Comments
 
-    Add clear comments for code that isn't quite clear what it's doing. Avoid writing too many comments that are obvious and explain exactly what a line is doing clearly.
+Add clear comments **when needed** and **when necessary**.
+- If code can be understood in a glance, don't add a comment.
+- If code is complex, add a comment explaining what it does.
 
 ### Curly Braces & If Statements
 
-- All curly braces start on the same line as preceding code
-- `else` statements start on the same line as preceding curly brace
-- No parentheses around `if` or `else` conditions
+- All curly braces start on the same line as preceding code.
+- `else` statements start on the same line as preceding curly brace.
+- No parentheses around `if` or `else` conditions.
 
     ```swift
     // BAD
@@ -91,16 +92,18 @@ For help, you can stick to the style of code ChatGPT would provide.
 
 ### Semicolons
 
-- Just don't use them. It will work with them, but there's no reason. Please don't use them.
+- **Just don't use them.** It will work if you have them, but there's no need. Please don't use them.
 
 ### `let` vs. `var`
 
-- Only use `var` if you know the variable will change
-- Rule of thumb: declare everything as `let`, switch to `var` if you needed to change it later
+- Only use `var` if you know the variable will change.
+- Rule of thumb: declare everything as `let`, switch to `var` if you needed to change it later.
 
 ### Nullable Types
 
-- It is preferred to declare variables and funciton return types as nullable `?` where a `null` value can take place
-- Use `!` as a last resort _if and only if_ you are 100% sure the variable will be defined beforehand
+- It is preferred to declare variables and funciton return types as nullable `?` where a `null` value can take place.
+- Use `!` as a last resort _if and only if_ you are 100% sure the variable will be defined beforehand.
 
-Credit to Ali Krema from CIS 1950-201 Spring 2023 for Style Guide format.
+Authored by [Jordan Hochman](https://jordanh.xyz/) and [Yuying Fan](https://www.linkedin.com/in/fanyuying/), @Jan 2024.
+
+Credit to [Ali Krema](https://www.alikrema.com/) from [CIS 1950-201 Spring 2023](https://cis1950android.github.io/styleguide/) for Style Guide format.

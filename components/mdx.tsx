@@ -4,6 +4,7 @@ import { Card } from "./Card";
 import { Prose } from "./Prose";
 import { StaffGrid } from "./StaffGrid";
 import { UpcomingAssignments } from "./UpcomingAssignments";
+import { FormattedDate } from "./FormattedDate";
 
 export const mdxComponents: MDXComponents = {
     a: ({ href, ...props }) => {
@@ -17,6 +18,7 @@ export const mdxComponents: MDXComponents = {
         }
     },
     Card: Card,
+    FormattedDate: FormattedDate,
     Prose: Prose,
     StaffGrid: StaffGrid,
     UpcomingAssignments: UpcomingAssignments,

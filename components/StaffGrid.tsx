@@ -8,6 +8,7 @@ export type StaffMemberProps = {
     github?: string
     website?: string
     avatar?: string
+    oh?: string
 }
 
 function StaffMember({
@@ -20,6 +21,7 @@ function StaffMember({
     github,
     website,
     avatar,
+    oh,
 }: StaffMemberProps) {
     const links = [
         github && {
@@ -44,6 +46,7 @@ function StaffMember({
             {flavorText && <div className="italic opacity-60 text-sm">{flavorText}</div>}
             <div className="text-sm mt-2"><span className="font-medium">Email</span>: <span className="font-mono">{pennkey}@{school}</span></div>
             <div className="text-sm"><span className="font-medium">Pronouns</span>: {pronouns}</div>
+            {oh && <div className="text-sm"><span className="font-medium">OH</span>: {oh}</div>}
             {links.length > 0 && <div className="text-sm flex gap-2">
                 {links.map(({ text, href }, index) => <a key={index} href={href} className="link" target="_blank" rel="noopener noreferrer">{text}</a>)}
             </div>}

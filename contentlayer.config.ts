@@ -112,8 +112,9 @@ export const Lecture = defineDocumentType(() => ({
         files: {
             type: 'list',
             resolve: page => {
-                const contents = readdirSync(join(dirname(fileURLToPath(import.meta.url)), "../../../content", page._raw.sourceFileDir))
-                return contents.filter(file => file !== "data.yaml" && !file.startsWith(".")).toSorted((a, b) => {
+                const contents = readdirSync(join(dirname(fileURLToPath(import.meta.url)), "../../../content", page._raw.sourceFileDir)).filter(file => file !== "data.yaml" && !file.startsWith("."))
+                console.log(`Files for ${page._raw.sourceFileDir}: ${contents}`)
+                return contents.toSorted((a, b) => {
                     // Sort anything that starts with "slides" first
                     if (a.startsWith("slides") && !b.startsWith("slides")) return -1
                     if (!a.startsWith("slides") && b.startsWith("slides")) return 1

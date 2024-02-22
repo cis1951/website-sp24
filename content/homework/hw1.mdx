@@ -1,6 +1,204 @@
 ---
-title: "HW1: Swift Playground"
-isReleased: false
-releaseDate: 2024-01-29T00:00:00-05:00
+title: "HW1: Text Adventure Game"
+isReleased: true
 dueDate: 2024-02-12T23:59:00-05:00
 ---
+
+[Submit this assignment on Canvas.](https://canvas.upenn.edu/courses/1774063/assignments/12099659)
+
+Author: [Anthony Li](https://github.com/anli5005)
+
+Reviewers: [Jordan Hochman](https://github.com/jhawk0224), [Yuying Fan](https://github.com/fyy26)
+
+Please leave feedback by posting on Ed or contacting the [course staff](/).
+
+**Required Software:** macOS Ventura, Xcode 15
+
+**Deadline:** <FormattedDate date={new Date("2024-02-12T23:59:00-05:00")} format="EEEE, M/d @ p" />
+
+<a className="button not-prose mr-1" href="http://github.com/cis1951/hw1-playground/zipball/main">Download Starter Code ↓</a> or [clone from GitHub](https://github.com/cis1951/hw1-playground)
+
+## Instructions
+
+Write a [text adventure game](https://en.wikipedia.org/wiki/Interactive_fiction) of your own design! We'll provide the UI -- you provide the story and gameplay.
+
+### What's a text adventure game?
+
+In a text adventure game, you walk the player through an interactive story. Generally, you describe the scene and the plot, and the player types in commands to interact with the world, a bit like this (with player inputs ***<u>bolded, italicized, and underlined</u>***):
+
+<pre className="whitespace-pre-wrap prose-strong:text-white">
+A flash of light. You're awake. Dazed, you look around. You're in a dark cave, with an exit to the east. You have no idea how you got here. Only one thing is certain: you have to get out.
+
+***<u>east</u>***
+
+Still confused, you sprint towards the light. As you exit the cave, sunlight engulfs you. You're at the edge of a rural village. A villager rests at the side of the road.
+
+***<u>talk</u>***
+
+You approach the villager. "Hello, traveler," she says. "Do you know if it's possible to get from two arbitrary but particular locations via the road network? Let G be an arbitrary but particular graph representing the road network. All I know is that G is an undirected graph with no cycles, and has exactly one fewer road than the number of locations."
+
+All of a sudden, it hits you.
+
+You're trapped in a CIS 1600 homework assignment.
+</pre>
+
+Text adventure games have been around for a while, with games like [Colossal Cave Adventure](https://en.wikipedia.org/wiki/Colossal_Cave_Adventure) and [Zork](https://en.wikipedia.org/wiki/Zork) available for decades. (You can even install `zork` on your computer using [Homebrew](https://formulae.brew.sh/formula/zork).) Even more recent examples use AI to spice things up, like [AI Dungeon](https://aidungeon.com/). The possibilities are endless!
+
+### Specific Requirements
+
+Your game should have:
+* At least 5 locations that must be traversed throughout the story
+    * Locations must be reachable and appear in a playthrough
+* At least 2 possible endings
+* At least 1 item that can be picked up to affect gameplay
+* "north", "south", "east", and "west" commands to move between locations
+* A "help" command that lists all available commands
+
+In addition, your code should contain:
+* At least 2 structs or enums to represent concepts such as locations or items
+    * The adventure game struct itself does not count towards this requirement
+* At least 1 protocol that you define (see "Tips & Recipes" for examples)
+    * One of your structs, classes, or enums must conform to the protocol
+* At least 1 non-trivial use of optionals
+    * For "non-trivial", you should use optionals when the `nil` case is meaningful and can occur in a live playthrough. For example, parsing a number from a string would be "non-trivial", as the string may not be a valid number. However, using [Array.first](https://developer.apple.com/documentation/swift/array/first) or similar on an array guaranteed to be non-empty would not be "non-trivial".
+* At least 1 use of arrays or dictionaries
+
+**You should also fill in the README** with:
+* Answers to the questions in the README
+* Series of commands that lead to each ending
+
+All state should be stored in the adventure game struct itself, and not in a global variable. To test this, try clicking the "Reset" button. Everything in the struct should be reset to its initial state.
+
+Be sure to follow the [code style guidelines](/~cis1951/codestyle) - we won't be grading on style too harshly, but unreadable or messy code may be reflected in the style grade.
+
+Don't feel the need to go overboard with your game in terms of creativity or complexity - we're more interested in how you'll apply the concepts we've learned in class. If you're stuck for ideas, you can always implement a classic like [Colossal Cave Adventure](https://en.wikipedia.org/wiki/Colossal_Cave_Adventure) or [Zork](https://en.wikipedia.org/wiki/Zork).
+
+### Getting Started
+
+**Note:** This assignment is very design-heavy. You may find it helpful to sketch out your game's map and architecture on paper before you start coding.
+
+To get started, [download and unzip the starter code](http://github.com/cis1951/hw1-playground/zipball/main), and open up `hw1.playground`. We've included a skeleton implementation to get you started. Feel free to rename the struct or add additional methods/properties as you see fit. You may notice some files in the "Sources" folder - those are used to implement the UI, and you shouldn't modify them.
+
+You'll implement your game as a struct conforming to the `AdventureGame` protocol, which is defined as follows:
+
+```swift
+/// A type that represents an Adventure game's state, behavior, and gameplay.
+public protocol AdventureGame {
+    /// Creates a new game.
+    init()
+
+    /// Title to be displayed at the top of the game.
+    var title: String { get }
+
+    /// Runs at the start of every game.
+    /// - Parameter context: The object you use to write output and end the game.
+    mutating func start(context: AdventureGameContext)
+
+    /// Runs when the user enters a line of input.
+    /// - Parameters:
+    ///   - input: The line the user typed.
+    ///   - context: The object you use to write output and end the game.
+    mutating func handle(input: String, context: AdventureGameContext)
+}
+```
+
+We'll pass in an `AdventureGameContext` object which implements these 3 methods:
+* `AdventureGameContext.write(_ attributedString: AttributedString)`: Adds the given line of rich text to the output.
+* `AdventureGameContext.write(_ string: String)`: Adds the given line to the output, without rich text formatting.
+* `AdventureGameContext.endGame()`: Ends the game immediately.
+
+Implement your game's logic in the `start` and `handle` methods, and keep track of its state through the struct's properties.
+
+You can use these methods to write output to the game's UI. For example, you can write a line of text like this:
+
+```swift
+context.write("The forest beckons, dark and foreboding.")
+```
+
+To end the game, you can call `context.endGame()`:
+
+```swift
+context.write("Game Over")
+context.endGame()
+```
+
+Do **not** use `print` - your output will not appear in the correct place.
+
+To run your game, run the entirety of the playground. You'll see your game running on the right side of the screen. If you don't see it, go to the menu bar and make sure **Editor > Live View** is checked.
+
+## Tips & Recipes
+
+### Structs & Protocols
+In general, any game object would make a good candidate for a struct or protocol. For example:
+* **Locations** could have a name, description, list of exits, and associated contents like items or characters
+* **Items** could have a name, description, and associated actions like "use"
+* **Characters** could have a name, description, and dialogue
+
+### Parsing Input
+```swift
+let arguments = input.split(separator: " ")
+if arguments.isEmpty {
+    context.write("Please enter a command.")
+    return
+}
+
+switch arguments[0] {
+    case "help":
+        helpCommand(context: context)
+    case "north":
+        // ...
+    case "south":
+        // ...
+    case "east":
+        // ...
+    case "west":
+        // ...
+    default:
+        context.write("Invalid command.")
+}
+```
+
+### Rich Text
+```swift
+var attributedString = AttributedString("The forest beckons, dark and foreboding.")
+attributedString.swiftUI.foregroundColor = .green
+context.write(attributedString)
+```
+
+Note that setting `attributedString.foregroundColor` (or similar properties) directly will not work - you must use the `swiftUI` property.
+
+## Grading
+
+We will grade your homework based on the following rubric, out of 100 points:
+
+* **Correctness** (45 points)
+  * *10 points:* All locations present
+  * *10 points:* All endings present
+  * *5 points:* Item is implemented
+  * *10 points:* All required commands implemented
+  * *10 points:* All state is stored inside the game struct
+* **Use of Language Constructs** (40 points)
+  * *10 points:* Uses 2 structs
+  * *10 points:* Design decisions make sense for the assignment (e.g. structs are thoughtfully used instead of randomly created)
+  * *5 points:* Defines a protocol
+  * *5 points:* At least one struct, class, or enum conforms to the protocol
+  * *5 points:* Uses optionals
+  * *5 points:* Use of arrays or dictionaries
+* **Style** (15 points)
+  * *5 points:* Code is readable (i.e. indentation and naming of symbols is reasonable)
+  * *5 points:* README suitably answers questions about the game and requirements
+  * *5 points:* README contains series of commands that lead to each ending
+* **Deductions**
+  * *-20 points:* Code doesn't compile
+
+## Extra Credit
+
+**+5 points:** Implement random outcomes/events that trigger when the player enters a location or performs an action. For this to count, the outcome must be random and not always occur.
+
+**+5 points:** Implement a dynamically updating `title` using a computed property. For example, the title could be the current location.
+
+## Submission
+
+To submit your homework, zip (or tar.gz) **both your playground and README** and [upload it to Canvas](https://canvas.upenn.edu/courses/1774063/assignments/12099659). Make sure that you've given the requirements a quick read before you do so.
+
+<a className="button not-prose mr-1" href="https://canvas.upenn.edu/courses/1774063/assignments/12099659">Submit on Canvas →</a>

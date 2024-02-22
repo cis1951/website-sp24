@@ -7,9 +7,15 @@ body {
     @apply dark:bg-black dark:text-white;
 }
 
-.prose a, .link {
+.prose a:not(.button), .link {
     @apply text-cyan-500 dark:text-cyan-400 underline;
     @apply decoration-cyan-500/50 dark:decoration-cyan-400/50;
     @apply hover:decoration-cyan-500 dark:hover:decoration-cyan-400;
     @apply hover:bg-cyan-500/20 dark:hover:bg-cyan-400/20;
+}
+
+.button {
+    @apply text-white bg-gradient-to-br from-cyan-600 to-purple-600 inline-block px-4 py-2 rounded-lg;
+    @apply hover:from-cyan-700 hover:to-purple-700 active:from-cyan-800 active:to-purple-800 transition-all;
+    @apply font-bold;
 }
