@@ -1,6 +1,148 @@
 ---
-title: "HW3: Sensors"
-isReleased: false
+title: "HW3: Penn Dining Scavenger Hunt"
+isReleased: true
 releaseDate: 2024-03-11T00:00:00-04:00
 dueDate: 2024-03-25T23:59:00-04:00
 ---
+
+[Submit this assignment on Canvas.](https://canvas.upenn.edu/courses/1774063/assignments/12212401)
+
+Author: [Anthony Li](https://github.com/anli5005)
+
+Please leave feedback by posting on Ed or contacting the [course staff](/).
+
+**Required Software:** macOS Ventura, Xcode 15
+
+**Deadline:** <FormattedDate date={new Date("2024-03-25T23:59:00-04:00")} format="EEEE, M/d @ p" />
+
+<a className="button not-prose mr-1" href="http://github.com/cis1951/hw3-gpx">Download GPX Files ↓</a> or [view on GitHub](https://github.com/cis1951/hw3-gpx)
+
+## Introduction
+
+In this assignment, you'll be building a location-based scavenger hunt game centered around the food and beverage institution we all know and love: Penn Dining.
+
+You'll use the Core Location framework to detect when the user is near a dining hall. Then, you'll use either the Core Motion framework or SwiftUI's gesture support to allow the user to "collect" a dining hall by shaking their device or scribbling on the screen.
+
+## Requirements
+
+Your game should have two screens:
+* A *home screen*, showing a list of dining halls and whether they've been "collected"
+    * Tapping on a dining hall should take the user to the dining hall screen for the corresponding hall
+* A *dining hall screen* that allows a user to "collect" a dining hall
+
+Specifically, the dining hall screen should:
+1. Check if the dining hall has already been collected. If it has, it should display a message saying so and prevent the user from collecting it again.
+2. Check if the user is within **50 meters** of the dining hall. If they are not, it should display an error and prevent the user from collecting the dining hall.
+3. Allow the user to collect the dining hall through one of two methods:
+    * **Shaking the device:** Use the Core Motion framework to collect the dining hall the user shakes the device
+        * You *must* use Core Motion to detect the shake with accelerometer data. Using `UIWindow.motionEnded()` will lead to reduced credit.
+        * The algorithm doesn't need to be *perfect* (there can be some false positives) - just make sure ordinary motion won't trigger the collection.
+    * **Drawing a scribble:** Use SwiftUI's gesture support to collect the dining hall when the user scribbles on the screen back and forth
+
+We recommend going with the shaking method as it's more fun, but you should choose the scribble method if you can't test on a physical device (e.g. you don't have a Mac or an iPhone). **Do *not* implement both methods - you will only receive credit for one.**
+
+You should keep track of the list of collected dining halls in a **view model** that is shared by both screens. Each dining hall should be represented by a **model struct**.
+
+Your game should contain the following dining halls:
+* 1920 Commons
+* Accenture Café
+* Falk Kosher Dining
+* Hill House
+* Houston Market
+* Joe's Café
+* Kings Court English House
+* Lauder College House
+* McClelland Express
+* Pret A Manger
+* Quaker Kitchen
+
+Coordinates for these can be found in [the GPX files](https://github.com/cis1951/hw3-gpx), or you can [use Google Maps to find them](https://support.google.com/maps/answer/18539).
+
+Finally, **please submit a short, 5-second video** of a dining hall being collected along with your project. This will help us grade, just in case we're not sure how to trigger the collection event.
+
+**Note:** You are *not* required to store the user's progress between app launches. We will also not prescribe a specific way you should handle errors.
+
+## Simulating Location
+
+If you don't have access to a physical device or don't feel like making the trek to each of the dining halls, worry not! Xcode has a built-in location simulation feature that allows you to simulate your device's location using a GPX file. To use it:
+
+1. [Download the GPX files from the link above.](https://github.com/cis1951/hw3-gpx)
+2. Run your app in the simulator on a device.
+3. In Xcode's menu bar, go to **Debug > Simulate Location > Add GPX File to Project...** and select the GPX files for each of the dining halls. (You can shift-click to select multiple files at once.)
+4. Once you've added the GPX files, you can select them from the **Simulate Location** menu to simulate your device's location.
+
+Note that if you're running on a physical device, location simulation will only work while your app is actively being run from Xcode. Running your app from the home screen will use the device's actual location.
+
+(You can also use the **Features > Location** menu in the Simulator, but doing it through Xcode will let you use our GPX files.)
+
+## Instructions
+
+Some brief instructions to get you started:
+
+1. Start by planning out how you're going to structure your app and its screens.
+2. Create a new SwiftUI project in Xcode.
+3. Model each dining hall using a struct. You can use [CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/cllocationcoordinate2d?language=swift) to represent the location of each dining hall.
+4. Create a view model to keep track of which dining halls have been collected.
+5. Write a view for the home screen, using the view model and models you wrote in steps 3 and 4.
+6. Begin writing the view for the dining hall screen. This is a pretty complicated screen, so we recommend you split out the dirty logic into a separate view model.
+7. Set up your `CLLocationManager` and its delegate, then request location permissions from the user.
+    * Be sure to set up your **purpose string**!
+8. Implement the logic to check if the user is within 50 meters of a dining hall.
+9. Implement the logic to collect a dining hall using either the Core Motion framework or SwiftUI's gesture support.
+    * For the motion case, you'll need to set up a `CMMotionManager` object, listen for device motion updates, then use the accelerometer data to detect a shake.
+    * For gestures, you'll need to set up a gesture on your view, then use the position data you get from the `onChanged` handler to determine whether the user is scribbling. You may want to add a few state variables to help you with this.
+
+Test your app using the location simulation steps above! As always, ask on Ed or in office hours if you have any questions or are running into trouble.
+
+## Grading
+
+This assignment is worth 100 points, broken down as follows:
+
+### Home and Dining Hall Screens (15 points)
+* 5 points: Home screen displays a list of dining halls
+* 5 points: Home screen displays whether each dining hall has been collected
+* 5 points: Tapping on a dining hall takes the user to the dining hall screen for that hall
+* 5 points: Dining hall screen checks if the dining hall has already been collected
+
+### Location (25 points)
+* 5 points: App sets up a `CLLocationManager` and its delegate
+* 5 points: App requests location permissions
+* 15 points: Dining hall screen checks if the user is within 50 meters of the dining hall
+
+### Collection (25 points)
+
+If you're using Core Motion:
+* 5 points: App sets up a `CMMotionManager` object and listens for device motion updates
+* 20 points: Dining hall screen allows the user to collect the dining hall by shaking the device
+
+If you're using SwiftUI gestures:
+* 5 points: Dining hall screen sets up a gesture on the view
+* 20 points: Dining hall screen allows the user to collect the dining hall by drawing a scribble
+
+### App Architecture (20 points)
+* 5 points: App uses a model struct to represent each dining hall
+* 10 points: App uses a view model to keep track of which dining halls have been collected
+* 5 points: App successfully uses `@StateObject`, `@ObservedObject`, and/or `@EnvironmentObject` to share the view model between the home and dining hall screens
+
+### Video (5 points)
+* 5 points: A short video is submitted showing a dining hall being collected
+
+### Code Quality (10 points)
+* 10 points: Code is readable (i.e. indentation and naming of symbols is reasonable)
+
+### Deductions
+* -20 points: App doesn't compile
+* -10 points: App crashes or fails to launch during normal execution
+* -10 points: Gesture/motion detection is unreliable (e.g. egregious false positives or negatives)
+
+## Extra Credits
+
+* **Map (+10):** Instead of a list, display the dining halls on a map. The user should be able to tap on a dining hall to go to the dining hall screen. The map should also show the user's current location.
+* **Permission Priming (+10):** Before requesting location permissions, use the `.sheet` modifier to display a message explaining why the app needs the user's location.
+    * Setting a purpose string is insufficient for this extra credit - you must display a separate message to the user.
+
+## Submission
+
+To submit, upload a zip (or .tar.gz) of your **entire Xcode project, including GPX files (if any) and video** to Canvas. Make sure you've given the requirements another read before you do so.
+
+<a className="button not-prose mr-1" href="https://canvas.upenn.edu/courses/1774063/assignments/12212401"> Submit on Canvas →</a>
