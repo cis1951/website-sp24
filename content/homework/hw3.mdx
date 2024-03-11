@@ -79,20 +79,102 @@ Note that if you're running on a physical device, location simulation will only 
 
 Some brief instructions to get you started:
 
-1. Start by planning out how you're going to structure your app and its screens.
-2. Create a new SwiftUI project in Xcode.
-3. Model each dining hall using a struct. You can use [CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/cllocationcoordinate2d?language=swift) to represent the location of each dining hall.
-4. Create a view model to keep track of which dining halls have been collected.
-5. Write a view for the home screen, using the view model and models you wrote in steps 3 and 4.
-6. Begin writing the view for the dining hall screen. This is a pretty complicated screen, so we recommend you split out the dirty logic into a separate view model.
-7. Set up your `CLLocationManager` and its delegate, then request location permissions from the user.
-    * Be sure to set up your **purpose string**!
-8. Implement the logic to check if the user is within 50 meters of a dining hall.
-9. Implement the logic to collect a dining hall using either the Core Motion framework or SwiftUI's gesture support.
-    * For the motion case, you'll need to set up a `CMMotionManager` object, listen for device motion updates, then use the accelerometer data to detect a shake.
-    * For gestures, you'll need to set up a gesture on your view, then use the position data you get from the `onChanged` handler to determine whether the user is scribbling. You may want to add a few state variables to help you with this.
+### Step 1: Plan your app
 
-Test your app using the location simulation steps above! As always, ask on Ed or in office hours if you have any questions or are running into trouble.
+Start by reading through these instructions and planning out how you're going to structure your app and its screens.
+
+In particular, think through:
+* What models, view models, and views do you need?
+* How will your view model communicate with its views?
+* Which part of your architecture will handle location, motion, and gesture data?
+* How and where will you keep track of which dining halls have been collected?
+* If you're using motion, how will you detect a shake?
+* If you're using gestures, how will you detect a scribble?
+
+### Step 2: Model each dining hall using a struct
+
+When you're ready, create a new SwiftUI project. You'll most likely want to start by modeling each dining hall using a struct.
+
+You'll want to keep track of a dining hall's name, its location, and maybe some other properties (such as an ID to make it conform to `Identifiable`). Here's a starting point for your dining hall struct:
+
+```swift
+struct DiningHall: Identifiable {
+    var id: UUID
+    var name: String
+    var location: CLLocation    
+}
+```
+
+[CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/cllocation?language=swift) represents a latitude and longitude -- you can use it to represent the location of each dining hall.
+
+Once you've made this struct, you'll want to create an array of dining halls somewhere in the app. You can hardcode this array using coordinates from [the GPX files](https://github.com/cis1951/hw3-gpx), or [Google Maps](https://support.google.com/maps/answer/18539).
+
+### Step 3: Create a view model to store collected dining halls
+
+Now, you'll want to create a view model to keep track of which dining halls have been collected. Ideally, this view model should be shared between the home and dining hall screens. Declare a new `ObservableObject`, like this:
+
+```swift
+class DiningHallViewModel: ObservableObject {
+    // Add a @Published property to keep track of which dining halls have been collected
+
+    // Add methods, such as collecting and checking if a dining hall has been collected
+}
+```
+
+You can then use `@StateObject` in your `App` struct to create an instance of this view model for your app. Then, use the `.environmentObject` modifier to pass it to your home and dining hall screens, much like we did in [lecture 5](https://github.com/cis1951/lec5-code).
+
+### Step 4: Write the home screen
+
+Now, you can start writing the home screen, using the view model and models you wrote in steps 2 and 3. You can use a simple `List` view for this.
+
+### Step 5: Begin writing the dining hall screen
+
+The dining hall screen is where most of the action happens. This is a pretty complicated screen, so we recommend you split out the dirty logic into a separate view model.
+
+You'll most likely want to start with the first check: seeing if a dining hall has already been collected using the view model you wrote earlier.
+
+### Step 6: Set up your `CLLocationManager` and its delegate
+
+It's time to start using the Core Location framework. Set up a [CLLocationManager](https://developer.apple.com/documentation/corelocation/cllocationmanager), and wire up one of your objects to be its [delegate](https://developer.apple.com/documentation/corelocation/cllocationmanagerdelegate). To help you with this, you can consult [our finished code from lecture 7](https://github.com/cis1951/lec7-code/tree/solution), or Apple's [Configuring Your App to Use Location Services](https://developer.apple.com/documentation/corelocation/configuring_your_app_to_use_location_services) tutorial.
+
+Once you've set up your manager and delegate, go ahead and [request location permissions](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620562-requestwheninuseauthorization) from the user, being sure to handle the case where the user has already approved your request. **Be sure to set up a [purpose string](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/requesting_access_to_protected_resources/#3037322)!**
+
+### Step 7: Check whether the user is within 50 meters of a dining hall
+
+Now that you've obtained location permissions, you can start checking if the user is within 50 meters of a given dining hall. To do this:
+1. Request the user's location by calling the [requestLocation() method](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620548-requestlocation).
+2. When you receive the location in the delegate, use the [distance(from:)](https://developer.apple.com/documentation/corelocation/cllocation/1423689-distance) method to check how far the user is from the dining hall.
+3. Update your UI and state based on the result.
+
+To test your app, you can use the location simulation steps above!
+
+### Step 8: Implement the logic to collect a dining hall
+
+With location checking out of the way, you can now implement the logic to collect a dining hall, using either the Core Motion framework or SwiftUI's gesture support.
+
+**If you're using motion:** You'll need to set up a [CMMotionManager](https://developer.apple.com/documentation/coremotion/cmmotionmanager) object, listen for device motion updates, then use the accelerometer data to detect a shake. For help with setting up access to motion data, you can consult [our finished code from lecture 7](https://github.com/cis1951/lec7-code/tree/solution).
+
+**If you're using gestures:** You'll need to set up a gesture on your view, then use the position data you get from the `onChanged` handler to determine whether the user is scribbling. You may want to add a few state variables to help you with this. For help with gesture recognition, you can check out the [slides from lecture 6](https://www.seas.upenn.edu/~cis1951/lectures/06-custom-views-and-event-handling/slides.pdf) or our [live demo walkthrough](https://www.seas.upenn.edu/~cis1951/lectures/06-custom-views-and-event-handling/live-demo-06.md).
+
+### Step 9: Test and submit!
+
+Be sure to test collecting multiple dining halls in a run. Don't forget to record a short video of a dining hall being collected!
+
+## Resources
+
+This is a fairly complex assignment. **We encourage you to come to office hours or ask on Ed** if you have any questions or are running into trouble. We're here to help!
+
+Some relevant course material:
+
+* Lecture 5: App Lifecycle, Structure, and MVVM
+    * [Slides](https://www.seas.upenn.edu/~cis1951/lectures/05-app-lifecycle-and-structure/slides.pdf)
+    * [Code](https://github.com/cis1951/lec5-code)
+* Lecture 6: Custom Views and Gesture Recognition
+    * [Slides](https://www.seas.upenn.edu/~cis1951/lectures/06-custom-views-and-event-handling/slides.pdf)
+    * [Live Demo Walkthrough](https://www.seas.upenn.edu/~cis1951/lectures/06-custom-views-and-event-handling/live-demo-06.md)
+* Lecture 7: Location and Motion
+    * [Slides](https://www.seas.upenn.edu/~cis1951/lectures/07-location-and-motion/slides.pdf)
+    * [Finished Code](https://github.com/cis1951/lec7-code/tree/solution)
 
 ## Grading
 
