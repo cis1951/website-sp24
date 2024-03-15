@@ -48,6 +48,18 @@ export const menuItems: MenuItemProps[] = [
         icon: "🧑‍💻",
         href: "/resources",
     },
+    {
+        id: "github",
+        title: "GitHub",
+        icon: "☁️",
+        href: "https://github.com/cis1951",
+    },
+    {
+        id: "ed",
+        title: "Ed Discussion",
+        icon: "💬",
+        href: "https://edstem.org/us/courses/54318/discussion/",
+    },
 ]
 
 export type MenuCoordinator = {
@@ -93,7 +105,6 @@ export function MenuItemActivator({ item }: MenuItemActivatorProps) {
 
 function MenuItem({ id, title, icon, href }: MenuItemProps) {
     const context = useMenuContext()
-    const router = useRouter()
     const isActive = id === context.activeItem
 
     let className = "block px-3 py-2 rounded-xl group relative bg-opacity-0"
