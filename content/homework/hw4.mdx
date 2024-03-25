@@ -4,3 +4,365 @@ isReleased: false
 releaseDate: 2024-03-25T00:00:00-04:00
 dueDate: 2024-04-08T23:59:00-04:00
 ---
+
+[Submit this assignment on Canvas.](https://canvas.upenn.edu/courses/1774063/assignments/12247264)
+
+Author: [Jordan Hochman](https://github.com/jhawk0224)
+
+Please leave feedback by posting on Ed or contacting the [course staff](/).
+
+**Required Software:** macOS Ventura, Xcode 15
+
+**Deadline:** <FormattedDate date={new Date("2024-04-08T23:59:00-04:00")} format="EEEE, M/d @ p" />
+
+## Introduction
+
+In this assignment, you will be building a weather app! This weather app will allow you to enter in locations and get the weather at those locations, as well as save historical searches and results.
+
+You will use two APIs for this, the first is Open Meteo's free [weather API](https://open-meteo.com/en/docs/) and Nominatim's [geocoding API](https://nominatim.org/release-docs/develop/api/Overview/) (to get longitude/latitude from city/address). The app will let you add different saved locations such that when pulling up those saved locations, you will be able to see the weather fetched from them (similar to the actual Weather app on the iPhone).
+
+## Requirements
+
+Your app should have at least three screens:
+* A *home screen* that lets the user enter a location with some combination of text fields.
+    * This can be one text field for a general address/location string, or two to enter a city and state, or any combination of the above. We will leave this to you to decide how you want to ask the user for the location.
+    * This *cannot* be a longitude and latitude input field, as will be explained later.
+    * Must include some "submit" button which will bring the user to the next page with the weather for that location.
+* A screen showing the weather deatils of a given location when opened (similar to the normal iOS wather app) (it queryies the API when opened). More details below.
+* A screen showing some previous search of a location and the results from that query.
+
+Therefore you will need some way to save any given search, or the results from that search (probably two buttons on the weather detail screen). Then you will need a way to navigate to these saved search locations, and a way to see prior saved results. You need to decide how it's best to navigate between these, but we recommend one of the following:
+    • `NavigationSplitView` similar to what we had with the [Minicourse Browser](https://github.com/cis1951/lec5-code) and [iOstagram](https://github.com/cis1951/lec8-code) where saved locations would appear on the side bar. The left sidebar could be split into two sections (two lists), one on top showing the saved locations, and one on the bottom showing the saved results.
+    • A `TabView` with the `.tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))` modifier. Then you can swipe to navigate between saved locations, if they're there. Then you can decide how else to navigate to the saved search results.
+
+Specifically, the weather detail screen should:
+1. Show the location that the weather was queried at.
+    • This should be the returned value from the geocoding API explained below, NOT the users input from the last screen.
+2. Show the weather at the location specified.
+    • The weather API provides a ton of options and optional query parameters, but you MUST show the following (feel free to add more if you wish!):
+        - Temperature (temperature_2m)
+        - Apparent Temperature (apparent_temperature)
+        - Relative Humidity (relative_humidity_2m)
+        - Precipitation probability (precipitation_probability)
+        - Precipitation (precipitation)
+    * You MUST use a CodingKeys enum to clean up these names in the returned JSON for the Decodable struct.
+3. A button to favorite this search location so that it is added to the favorites list.
+4. A button to save the actual results of this search with a timestamp so they can later be looked at.
+
+## Saving Data
+
+There are two parts to saved data.
+
+The first thing to save is the saved locations that can be reponened/requeried in the future. This can/should be a list of longitude, latitude pairs (which will uniquely identify a locaiton for us) (this is returned by the geocoding API).
+
+The second thing to save is the weather results from a given query. These saved results must include the 5 fields mentioned above, as well as the location (longitude, latitude) and a timestamp (Date) from when this query was made.
+
+Both of these must be saved to the device. You will need to decide which method to use to save these to the device. While you may use UserDefaults for one of these, you MUST use at least 1 other *appropriate* framework to store some of the data.
+
+## API Documentation / Help
+
+As both APIs have a lot of documentaiton, we will give a brief rundown of them here, however please feel free to read through them yourself.
+
+1. [Geocoding API](https://nominatim.org/release-docs/develop/api/Overview/)
+
+We will be using the `search` [route](https://nominatim.org/release-docs/develop/api/Search/) which takes in many optional query parameters. Reading through the provided documentation, you can either provided a `q` query parameter with any input string, or query parameters like `street`, `city`, `county`, `state`, `country`. The fact that the API allows us to use either method is what gives us the option of allowing the user to either input a specific city/state on the main view, or a generic input string. Thus you will need to use whichever qery parameters matches your desired implementation.
+
+Note that you need to include the query parameter `format=json` in order to get the json response data. To investigate this API, we recommend either using manual `curl` requests, or using Postman if you have experience with that. Here is an example query using curl if you want to test in terminal:
+
+```
+curl "https://nominatim.openstreetmap.org/search?q=philadelphia&addressdetails=1&format=json"
+```
+
+We recommend using this [JSON Formatter](https://jsonformatter.org/json-pretty-print) to view the returned JSON in a readable format. For the example above, this gives the following (some of it was removed for brevity):
+
+```json
+[
+  {
+    "place_id": 14128726,
+    "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+    "osm_type": "relation",
+    "osm_id": 188022,
+    "lat": "39.9527237",
+    "lon": "-75.1635262",
+    "class": "boundary",
+    "type": "administrative",
+    "place_rank": 16,
+    "importance": 0.7137973339835988,
+    "addresstype": "city",
+    "name": "Philadelphia",
+    "display_name": "Philadelphia, Philadelphia County, Pennsylvania, United States",
+    "address": {
+      "city": "Philadelphia",
+      "county": "Philadelphia County",
+      "state": "Pennsylvania",
+      "ISO3166-2-lvl4": "US-PA",
+      "country": "United States",
+      "country_code": "us"
+    },
+    "boundingbox": [
+      "39.8670050",
+      "40.1379593",
+      "-75.2802977",
+      "-74.9558314"
+    ]
+  },
+  {
+    "place_id": 376330130,
+    ...
+  },
+  ...
+]
+```
+
+Note that it gives multiple locations that all could match your input, so you should probably take the first result given for your results. Note that while we especially care about the longitude and latitude of this result (to use in the weather API), this also provides us with useful location data as well (e.g. like city/state) if you use the `addressdetails=1` query parameter, so you should save that too. Everything else you don't need to save so it doesn't need to be in the decodable struct.
+
+2. [Weather API](https://open-meteo.com/en/docs/)
+
+There are tons of query parameters able to be used for this, but you will need to figure out which ones you need and how to use them. Note that it requires a longitude and latitude, not some user typed address. This is why we need the previous Geocoding API. Also note that there are query parameters that represent the units of the results, which might be useful for temperature. To give an example of one possible query URL:
+
+```
+curl "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,precipitation&temperature_unit=fahrenheit&forecast_days=1"
+```
+
+Note that this is giving hourly data, and there are many options as to how to configure the predition range. For our app, we only care about the current weather for the requirements, but feel free to save all of the data or give input options for forecast range if you wish.
+
+Here is the example response for that query (again some parts omitted for brevity):
+
+```json
+{
+  "latitude": 52.52,
+  "longitude": 13.419998,
+  "generationtime_ms": 0.08404254913330078,
+  "utc_offset_seconds": 0,
+  "timezone": "GMT",
+  "timezone_abbreviation": "GMT",
+  "elevation": 38,
+  "hourly_units": {
+    "time": "iso8601",
+    "temperature_2m": "°F",
+    "relative_humidity_2m": "%",
+    "apparent_temperature": "°F",
+    "precipitation_probability": "%",
+    "precipitation": "mm"
+  },
+  "hourly": {
+    "time": [
+      "2024-03-25T00:00",
+      ...,
+      "2024-03-25T23:00"
+    ],
+    "temperature_2m": [
+      41.3,
+      ...,
+      37.9
+    ],
+    "relative_humidity_2m": [
+      91,
+      ...,
+      90
+    ],
+    "apparent_temperature": [
+      35.6,
+      ...,
+      33.5
+    ],
+    "precipitation_probability": [
+      97,
+      ...,
+      0
+    ],
+    "precipitation": [
+      0.3,
+      ...,
+      0
+    ]
+  }
+}
+```
+
+Note a couple things: First, the output longitude and latitude are NOT the same as the queried ones. This is because the weather can't necessarily be gotten at every location. You should ignore these output coordinates, and instead use the input ones as the identifier for a location if needed.
+
+Secondly, depending on what optional query parameters you use for your query (and the length of the forecast predictions), the output data is in a big list of hourly predictions. You only need to get the current hour, which can be found using the appropriate index in the `time` field above.
+
+## Instructions
+
+Some brief instructions to get you started:
+
+### Step 1: Plan your app
+
+Start by reading through these instructions and planning out how you're going to structure your app and its screens.
+
+In particular, think through:
+* What models, view models, and views do you need?
+* How will your view model communicate with its views?
+* Which part of your architecture will handle fetching the API data?
+* How and where will you keep track of which locations have been favorited previously?
+* How will you let the user navigate to these previously saved search locations?
+
+### Step 2: Investigate the APIs mentioned and make Models for returned results
+
+When you're ready, create a new SwiftUI project. You'll most likely want to start by investigating the return type from the APIs, and make a structs for the returned data.
+
+For the Geocoding API, we care about the longitude and latitude, as this will identify the location if it's saved for later. But we also probably want to save the address information so we can show the detailed information about it on the weather screen. Implement a Decodable struct that represents this location data you want returned. Note that you can omit fields in a decodable struct, and even if they're in the returned json they won't be decoded which is useful.
+
+Now make a struct for the returned weather results. You must include at least the 5 fields mentioned above, and you must use CodingKeys to remove the `_2m` from the json field names that end in it. You will probably also want to store the time list so you can later reference the current time for the prediction. You should also probably add a field to the decodable struct that represents the timestamp it was made, using Date() (so it's easier to save the result later).
+
+Here's a starting point for your structs, but you will probably need to edit them:
+
+```swift
+struct Location: Identifiable, Decodable {
+    let lat: Double
+    let lon: Double
+    let name: String
+    let display_name: String
+    let address: Address
+
+    var id: String { "\(lat)_\(lon)" }
+}
+
+struct Address: Decodable {
+    let city: String
+    let county: String
+    let state: String
+    let country: String
+    let country_code: String
+}
+
+struct WeatherInfo: Decodable {
+    let timestamp = Date()
+    let hourly_units: ???
+    let data: WeatherData
+
+    enum CodingKeys: String, CodingKey {
+        case hourly_units
+        case data = "hourly"
+    }
+}
+
+struct WeatherData: Decodable {
+    let time: [Date]
+    let temperature: [Double]
+    let relative_humidity: [Int]
+    let apparent_temperature: [Double]
+    let precipitation_probability: [Int]
+    let precipitation: [Double]
+
+    enum CodingKeys: String, CodingKey {
+        case temperature = "temperature_2m"
+        case relative_humidity = "relative_humidity_2m"
+        case apparent_temperature
+        case precipitation_probability
+        case precipitation
+    }
+}
+```
+
+### Step 3: Create a view model to store saved locations and saved results
+
+Once you've made the structs above, you'll want to create an array of locations (representing the saved locations), and an array of saved search results (or maybe a dictionary... it's up to you to decide since you will need some way of identifying/matching up the saved weather data result with its location. You could also edit the structs above to combine them in some way if you wish.).
+
+These will also need to be saved to the device, so you will need to make appropriate modifications so that each of these are saved when updated in the view model. This depends on what you decide to use for each one.
+
+Useful tip: If you are using UserDefaults and have an @AppStorage property wrapper inside some ObservableObject, this automatically makes the variable also act as @Published.
+
+Now use `@StateObject` in your main view to create an instance of this view model for your app. Then, use the `.environmentObject` modifier to pass it to all other views, much like we did in [lecture 5](https://github.com/cis1951/lec5-code).
+
+### Step 4: Write the home screen
+
+Now, you can start writing the home screen, using the view model and models you wrote in steps 2 and 3. As mentioned earlier, one possible option for the navigation is the NavigationSplitView (like in [Minicourse Browser](https://github.com/cis1951/lec5-code) and [iOstagram](https://github.com/cis1951/lec8-code)).
+
+But for now, just worry about the content of the home view. We want a few input boxes, but the details are up to you. Decide if you want the user to either enter a generic string that could represent a location, or if you want multiple boxes for city/state or something similar to that (this will be directly passed into the geocoding API later). Then make a button that will get the location (longitude/latitude, the Location struct) from this string, and move to the weather details view from the resulting Location struct.
+
+### Step 5: Make file for API calls
+
+Similar to what we did in [lecture 8](https://github.com/cis1951/lec8-code), make a file that will handle all of your API calls.
+
+You probably want to start with a `getLocation` function. This should take in as inputs whatever the user input (e.g. either a generic string, two strings for city/state, or something else depending on what you decided in step 4). Then it should call the appropriate geocoding URL to decode the response data and return the result. Note that it returns a list of locations, so you probably only want to return the first one (but also note that there may be none returned at all!).
+
+You will also want to make a function to get the weather given an input longitude and latitude (doubles) using the weather API. You can alternatively make it take in a Location struct. This should return the WeatherInfo struct you made above.
+
+### Step 6: Write the location detail screen
+
+This screen will take in the Location (containing longitude and latitude). Then in a `.onAppear` modifier, call the appropriate API function you made to get the weather data, and set an @State variable to this data. This should cause the view to display the proper results.
+
+Also add two buttons to either save the location, or the location and it's associated timestamped weather data. The exact implementation details will depend on which data persistence you used, but they will probably call functions in your view model.
+
+For the first button (which saves the location), if the location has already been saved this should become an unsave button (which removes it from saved locations).
+
+### Step 7: Write the previous search result screen
+
+This screen will take in the Location and a WeatherInfo (or something similar if you changed the structs somehow). It should then show the data from these, as well as the timestamp. There should also be a button to delete the saved search result on this screen, which then navigates you back to home (after deletion).
+
+### Step 7: Finish the NavigationSplitView on the home screen
+
+Add two lists to the left side bar with the list of saved locations, and saved results.
+
+### Step 10: Test and submit!
+
+Be sure to test using multiple different locations, as well as closing and reponening the app for data persistence!
+
+## Resources
+
+This is a fairly complex assignment. **We encourage you to come to office hours or ask on Ed** if you have any questions or are running into trouble. We're here to help!
+
+Some relevant course material:
+
+* Lecture 5: App Lifecycle, Structure, and MVVM
+    * [Slides](https://www.seas.upenn.edu/~cis1951/lectures/05-app-lifecycle-and-structure/slides.pdf)
+    * [Code](https://github.com/cis1951/lec5-code)
+* Lecture 8: Networking and Error Handling
+    * [Slides](https://www.seas.upenn.edu/~cis1951/lectures/08-networking/slides.pdf)
+    * [Code](https://github.com/cis1951/lec8-code)
+* Lecture 9: Data Persistence
+    * [Slides](https://www.seas.upenn.edu/~cis1951/lectures/09-data-persistence/slides.pdf)
+    * [Code](https://github.com/cis1951/lec9-code)
+
+## Grading
+
+This assignment is worth 100 points, broken down as follows:
+
+### Home and Weather Views (25 points)
+* 5 points: Home screen displays a list of saved locations and saved results
+* 5 points: Home screen has a field or fields for user input, and a button to submit
+* 5 points: Location detail screen shows the location name FROM THE API, not the user input, and at least the 5 required fields
+* 5 points: Location detail screen's two buttons to save work as intended
+* 5 points: Saved search result screen shows previous result and timestamp, and has a button to unsave
+
+### Networking & API Calls (25 points)
+* 5 points: App correctly uses Geocoding API
+* 5 points: App correctly decodes result of Geocoding API
+* 5 points: App correctly uses Weather API
+* 5 points: App correctly decodes result of Weather API
+* 5 points: App calls these API functions at the appropriate locations
+
+### Persistent Data Storage (25 points)
+* 5 points: Decided on appropraite types of persistent storage for data
+There are 2 places where data needs to be stored, and each is worth 10 points:
+    If UserDefaults is used:
+    * 10 points: Correctly uses @AppStorage wrapper on variable and variable is properly used in the code
+    Anything else:
+    * 5 points: App correctly sets up whichever framework was chosen
+    * 5 points: App correctly sets uses whichever framework was chosen, and writes/reads data from it correctly
+
+### App Architecture (15 points)
+* 5 points: App uses a model struct to represent the locations and weather data
+* 10 points: App uses a view model to keep track of the data used throughout the app
+* 5 points: App successfully uses `@StateObject`, `@ObservedObject`, and/or `@EnvironmentObject` to share the view model between the home and dining hall screens
+
+### Code Quality (10 points)
+* 10 points: Code is readable (i.e. indentation and naming of symbols is reasonable)
+
+### Deductions
+* -20 points: App doesn't compile
+* -10 points: App crashes or fails to launch during normal execution
+
+## Extra Credits
+
+* **Current location (+10)** Add a way to autofill the user's current location into the input fields (see [Lecture 7](https://www.seas.upenn.edu/~cis1951/lectures/07-sensors/slides.pdf) for details on getting location!)
+* **Map (+5):** Show the given location in a map in the location detial view.
+
+## Submission
+
+To submit, upload a zip (or .tar.gz) of your **entire Xcode project to Canvas. Make sure you've given the requirements another read before you do so.
+
+<a className="button not-prose mr-1" href="https://canvas.upenn.edu/courses/1774063/assignments/12247264"> Submit on Canvas →</a>
