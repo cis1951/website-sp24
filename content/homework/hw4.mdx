@@ -32,8 +32,8 @@ Your app should have at least three screens:
 * A screen showing some previous search of a location and the results from that query.
 
 Therefore you will need some way to save any given search, or the results from that search (probably two buttons on the weather detail screen). Then you will need a way to navigate to these saved search locations, and a way to see prior saved results. You need to decide how it's best to navigate between these, but we recommend one of the following:
-    * `NavigationSplitView` similar to what we had with the [Minicourse Browser](https://github.com/cis1951/lec5-code) and [iOstagram](https://github.com/cis1951/lec8-code) where saved locations would appear on the side bar. The left sidebar could be split into two sections (two lists), one on top showing the saved locations, and one on the bottom showing the saved results.
-    * A `TabView` with the `.tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))` modifier. Then you can swipe to navigate between saved locations, if they're there. Then you can decide how else to navigate to the saved search results.
+* `NavigationSplitView` similar to what we had with the [Minicourse Browser](https://github.com/cis1951/lec5-code) and [iOstagram](https://github.com/cis1951/lec8-code) where saved locations would appear on the side bar. The left sidebar could be split into two sections (two lists), one on top showing the saved locations, and one on the bottom showing the saved results.
+* A `TabView` with the `.tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))` modifier. Then you can swipe to navigate between saved locations, if they're there. Then you can decide how else to navigate to the saved search results.
 
 Specifically, the weather detail screen should:
 1. Show the location that the weather was queried at.
@@ -337,13 +337,12 @@ This assignment is worth 100 points, broken down as follows:
 
 ### Persistent Data Storage (25 points)
 * 5 points: Decided on appropraite types of persistent storage for data
-
-There are 2 places where data needs to be stored, and each is worth 10 points:
-    If UserDefaults is used:
-    * 10 points: Correctly uses @AppStorage wrapper on variable and variable is properly used in the code
-    Anything else:
-    * 5 points: App correctly sets up whichever framework was chosen
-    * 5 points: App correctly sets uses whichever framework was chosen, and writes/reads data from it correctly
+* There are 2 places where data needs to be stored, and each is worth 10 points:
+    - If UserDefaults is used:
+        * 10 points: Correctly uses @AppStorage wrapper on variable and variable is properly used in the code
+    - Anything else:
+        * 5 points: App correctly sets up whichever framework was chosen
+        * 5 points: App correctly sets uses whichever framework was chosen, and writes/reads data from it correctly
 
 ### App Architecture (15 points)
 * 5 points: App uses a model struct to represent the locations and weather data
