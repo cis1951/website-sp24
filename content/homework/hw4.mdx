@@ -283,7 +283,7 @@ You will also want to make a function to get the weather given an input longitud
 
 ### Step 6: Write the location detail screen
 
-This screen will take in the Location (containing longitude and latitude). Then in a `.onAppear` modifier, call the appropriate API function you made to get the weather data, and set an @State variable to this data. This should cause the view to display the proper results.
+This screen will take in a Location (containing longitude and latitude). Then in a `.onAppear` modifier, call the appropriate API function you made to get the weather data for that location, and set an `@State` variable to this data. This should cause the view to display the proper results. You MUST show the 5 fields mentioned above, in addition to some sort of description of the location (like city/state or address).
 
 Also add two buttons to either save the location, or the location and it's associated timestamped weather data. The exact implementation details will depend on which data persistence you used, but they will probably call functions in your view model.
 
@@ -339,7 +339,7 @@ This assignment is worth 100 points, broken down as follows:
 * 5 points: Decided on appropraite types of persistent storage for data
 * There are 2 places where data needs to be stored, and each is worth 10 points:
     - If UserDefaults is used:
-        * 10 points: Correctly uses @AppStorage wrapper on variable and variable is properly used in the code
+        * 10 points: Correctly uses `@AppStorage` wrapper on variable and variable is properly used in the code
     - Anything else:
         * 5 points: App correctly sets up whichever framework was chosen
         * 5 points: App correctly sets uses whichever framework was chosen, and writes/reads data from it correctly
