@@ -1,6 +1,6 @@
 ---
 title: "HW4: Networking, Data Persistence"
-isReleased: false
+isReleased: true
 releaseDate: 2024-03-25T00:00:00-04:00
 dueDate: 2024-04-08T23:59:00-04:00
 ---
@@ -41,8 +41,6 @@ Specifically, the weather detail screen should:
 2. Show the weather at the location specified.
     * The weather API provides a ton of options and optional query parameters, but you MUST show the following (feel free to add more if you wish!):
         * Temperature (temperature_2m)
-        * Apparent Temperature (apparent_temperature)
-        * Relative Humidity (relative_humidity_2m)
         * Precipitation probability (precipitation_probability)
         * Precipitation (precipitation)
     * You MUST use a CodingKeys enum to clean up these names in the returned JSON for the Decodable struct.
@@ -55,7 +53,7 @@ There are two parts to saved data.
 
 The first thing to save is the saved locations that can be reponened/requeried in the future. This can/should be a list of longitude, latitude pairs (which will uniquely identify a locaiton for us) (this is returned by the geocoding API).
 
-The second thing to save is the weather results from a given query. These saved results must include the 5 fields mentioned above, as well as the location (longitude, latitude) and a timestamp (Date) from when this query was made.
+The second thing to save is the weather results from a given query. These saved results must include the 3 fields mentioned above, as well as the location (longitude, latitude) and a timestamp (Date) from when this query was made.
 
 Both of these must be saved to the device. You will need to decide which method to use to save these to the device. While you may use UserDefaults for one of these, you MUST use at least 1 other *appropriate* framework to store some of the data.
 
@@ -121,7 +119,7 @@ Note that it gives multiple locations that all could match your input, so you sh
 There are tons of query parameters able to be used for this, but you will need to figure out which ones you need and how to use them. Note that it requires a longitude and latitude, not some user typed address. This is why we need the previous Geocoding API. Also note that there are query parameters that represent the units of the results, which might be useful for temperature. To give an example of one possible query URL:
 
 ```
-curl "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,precipitation&temperature_unit=fahrenheit&forecast_days=1"
+curl "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m,precipitation_probability,precipitation&temperature_unit=fahrenheit&forecast_days=1"
 ```
 
 Note that this is giving hourly data, and there are many options as to how to configure the predition range. For our app, we only care about the current weather for the requirements, but feel free to save all of the data or give input options for forecast range if you wish.
@@ -140,8 +138,6 @@ Here is the example response for that query (again some parts omitted for brevit
   "hourly_units": {
     "time": "iso8601",
     "temperature_2m": "°F",
-    "relative_humidity_2m": "%",
-    "apparent_temperature": "°F",
     "precipitation_probability": "%",
     "precipitation": "mm"
   },
@@ -155,16 +151,6 @@ Here is the example response for that query (again some parts omitted for brevit
       41.3,
       ...,
       37.9
-    ],
-    "relative_humidity_2m": [
-      91,
-      ...,
-      90
-    ],
-    "apparent_temperature": [
-      35.6,
-      ...,
-      33.5
     ],
     "precipitation_probability": [
       97,
@@ -205,7 +191,7 @@ When you're ready, create a new SwiftUI project. You'll most likely want to star
 
 For the Geocoding API, we care about the longitude and latitude, as this will identify the location if it's saved for later. But we also probably want to save the address information so we can show the detailed information about it on the weather screen. Implement a Decodable struct that represents this location data you want returned. Note that you can omit fields in a decodable struct, and even if they're in the returned json they won't be decoded which is useful.
 
-Now make a struct for the returned weather results. You must include at least the 5 fields mentioned above, and you must use CodingKeys to remove the `_2m` from the json field names that end in it. You will probably also want to store the time list so you can later reference the current time for the prediction. You should also probably add a field to the decodable struct that represents the timestamp it was made, using Date() (so it's easier to save the result later).
+Now make a struct for the returned weather results. You must include at least the 3 fields mentioned above, and you must use CodingKeys to remove the `_2m` from the json field names that end in it. You will probably also want to store the time list so you can later reference the current time for the prediction. You should also probably add a field to the decodable struct that represents the timestamp it was made, using Date() (so it's easier to save the result later).
 
 Here's a starting point for your structs, but you will probably need to edit them:
 
@@ -242,20 +228,18 @@ struct WeatherInfo: Decodable {
 struct WeatherData: Decodable {
     let time: [Date]
     let temperature: [Double]
-    let relative_humidity: [Int]
-    let apparent_temperature: [Double]
     let precipitation_probability: [Int]
     let precipitation: [Double]
 
     enum CodingKeys: String, CodingKey {
         case temperature = "temperature_2m"
-        case relative_humidity = "relative_humidity_2m"
-        case apparent_temperature
         case precipitation_probability
         case precipitation
     }
 }
 ```
+
+Note: For decoding the dates properly, **you will probably need to set the JSON decoder's dateDecodingStrategy to a custom value**. Look up online how to set this so the dates are decoded properly.
 
 ### Step 3: Create a view model to store saved locations and saved results
 
@@ -283,7 +267,7 @@ You will also want to make a function to get the weather given an input longitud
 
 ### Step 6: Write the location detail screen
 
-This screen will take in a Location (containing longitude and latitude). Then in a `.onAppear` modifier, call the appropriate API function you made to get the weather data for that location, and set an `@State` variable to this data. This should cause the view to display the proper results. You MUST show the 5 fields mentioned above, in addition to some sort of description of the location (like city/state or address).
+This screen will take in a Location (containing longitude and latitude). Then in a `.onAppear` modifier, call the appropriate API function you made to get the weather data for that location, and set an `@State` variable to this data. This should cause the view to display the proper results. You MUST show the 3 fields mentioned above, in addition to some sort of description of the location (like city/state or address).
 
 Also add two buttons to either save the location, or the location and it's associated timestamped weather data. The exact implementation details will depend on which data persistence you used, but they will probably call functions in your view model.
 
@@ -324,7 +308,7 @@ This assignment is worth 100 points, broken down as follows:
 ### Home and Weather Views (25 points)
 * 5 points: Home screen displays a list of saved locations and saved results
 * 5 points: Home screen has a field or fields for user input, and a button to submit
-* 5 points: Location detail screen shows the location name FROM THE API, not the user input, and at least the 5 required fields
+* 5 points: Location detail screen shows the location name FROM THE GEOCODING API, not the user input, and at least the 3 required fields
 * 5 points: Location detail screen's two buttons to save work as intended
 * 5 points: Saved search result screen shows previous result and timestamp, and has a button to unsave
 
