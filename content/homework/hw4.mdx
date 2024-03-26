@@ -263,7 +263,7 @@ Once you've made the structs above, you'll want to create an array of locations 
 
 These will also need to be saved to the device, so you will need to make appropriate modifications so that each of these are saved when updated in the view model. This depends on what you decide to use for each one.
 
-Useful tip: If you are using UserDefaults and have an @AppStorage property wrapper inside some ObservableObject, this automatically makes the variable also act as @Published.
+Useful tip: If you are using UserDefaults and have an `@AppStorage` property wrapper inside some ObservableObject, this automatically makes the variable also act as `@Published`.
 
 Now use `@StateObject` in your main view to create an instance of this view model for your app. Then, use the `.environmentObject` modifier to pass it to all other views, much like we did in [lecture 5](https://github.com/cis1951/lec5-code).
 
