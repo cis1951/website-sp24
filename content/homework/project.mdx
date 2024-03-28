@@ -5,12 +5,14 @@ releaseDate: 2024-03-25T00:00:00-04:00
 dueDate: 2024-04-25T17:00:00-04:00
 auxiliaryDates:
     - name: Proposal due
-      date: 2024-04-01T23:59:00-04:00
+      date: 2024-04-03T23:59:00-04:00
     - name: Milestone 1
       date: 2024-04-10T23:59:00-04:00
 ---
 
 [Submit the project proposal on Canvas.](https://canvas.upenn.edu/courses/1774063/assignments/12247325)
+
+[Submit the project milestone 1 on Canvas.](https://canvas.upenn.edu/courses/1774063/assignments/12252202)
 
 [Submit the final project on Canvas.](https://canvas.upenn.edu/courses/1774063/assignments/12247331)
 
@@ -39,7 +41,7 @@ You will get approximately 4 weeks to finish your project, following the timelin
 ## Project Timeline
 
 * Project Release - Monday March 25th
-* Proposal Due Date (and group formation due date) - Monday April 1st
+* Proposal Due Date (and group formation due date) - Wednesday April 3rd
 * Proposal Feedback - by Thursday April 4th
 * Milestone 1 Due - by Wednesday April 10th
 * Due Date - Thursday April 25th **at 5:00 PM**
@@ -65,7 +67,40 @@ We will need to approve your project proposal, so make sure it is complex enough
 
 ## Milestone 1
 
-The requirements for this milestone are submitting some design documentation. For this, we want you to submit a detailed description of the layout/design of the app in addition to either sketches of the views, or a figma. This should be something that we can look at and get a feel as to how the app will look and function. This should be comprehensive and cover all parts of the app. You are free to work on programming the rest of the App before this deadline, but we wanted to give some time to plan out the structure if needed.
+For milestone 1, you will need to design and plan most of your app. **NOTE: Most/a lot of this work will be done in class during [Lecture 11: App Design & UX](https://www.seas.upenn.edu/~cis1951/lectures/11-app-design/slides.pdf) for your own project.** The requirements of what you need to include are listed below. Note that you are free to work on programming the rest of the App before this deadline due to time constraints, but we wanted to give some time to plan out the structure if needed.
+
+### Stage 1: User Stories
+The first stage is coming up with your app's user stories. User stories are a technique used in software development to capture and communicate a user's requirements or desired features in a concise and easily understandable way. A user story is typically a short sentence or paragraph that describes a specific action that a user wants to perform, why they want to perform it, and what benefit they expect to receive from it.
+
+Here are some key steps to follow when creating user stories:
+
+1. Identify your users
+Determine who your target audience is and what their needs and goals are. This will help you create user stories that are relevant and valuable to your users.
+2. Write user stories from the user's perspective
+Each user story should be written from the perspective of the user, using the format "As a [user], I want to [action], so that [benefit]". For example, "As a busy professional, I want to quickly add new events to my calendar, so that I can stay organized and on schedule."
+3. Keep it simple and specific
+User stories should be concise and specific, focusing on one feature or functionality at a time. Avoid adding unnecessary details or technical jargon that may confuse the user or the development team.
+4. Prioritize user stories
+Determine which user stories are most important to your users and prioritize them accordingly. This will help you focus on the features that provide the most value to your users.
+
+### Stage 2: Lo-fi Prototype
+A Lo-Fi (low-fidelity) prototype is a basic, simplified version of a product or interface that is used to test and validate design concepts and ideas. It is a rough, low-tech representation of the product or interface that can be created quickly and inexpensively, allowing designers to quickly test and iterate on their ideas without investing too much time or resources.
+
+For the purposes of our final project, make sure you have a sketch for every screen (and popup, modal, etc.) of your app.
+
+### Stage 3: View Hierarchy Diagram
+After reviewing and refining your Lo-Fi prototype, and upon finalizing your app screens, start preparing for the Hi-Fi prototype through creating a View Hierarchy Diagram.
+
+A View Hierarchy Diagram for an app is a visual representation of the relationship between the user interface elements (Views) in an app. It shows the layout of the UI elements and how they are organized and connected to each other. This diagram is useful for understanding the structure and layout of an app's UI, as well as for debugging and troubleshooting issues related to the app's layout.
+
+You will create a diagram for every screen in your app.
+
+TLDR - create a diagram that list all of your app’s views in a hierarchy, one per screen, similar to the ones we drew in class.
+
+### [OPTIONAL] Stage 4: Hi-Fi Prototype
+A Hi-Fi (high-fidelity) prototype is a more polished and detailed version of a product or interface that closely resembles the final product. It is typically created after the Lo-Fi prototype stage and is used to further test and refine the user experience, as well as to gather feedback from stakeholders, investors, and other members of the team.
+
+It is usually developed through Figma or similar software, although some designers prefer to draw traditionally by hand. For the sake of the project, you are not required to have a hi-fi prototype, although it is highly encouraged and recommended.
 
 ## Requirements
 
@@ -111,6 +146,8 @@ Some relevant course material:
 * Lecture 9: Data Persistence
     * [Slides](https://www.seas.upenn.edu/~cis1951/lectures/09-data-persistence/slides.pdf)
     * [Code](https://github.com/cis1951/lec9-code)
+* Lecture 11: App Design & UX
+    * Slides TBD
 * [Other Resources](https://www.seas.upenn.edu/~cis1951/resources/)
 * [Course GitHub](https://github.com/cis1951)
 
@@ -118,12 +155,11 @@ Some relevant course material:
 
 This project is worth 100 points, broken down as follows:
 
-### Project Proposal (10 points)
-* 5 points: Group formation is complete (on Canvas)
-* 5 points: App idea is interesting and complex enough to work on for project, good amount of thought put into creation, design, and architecture
+### Project Proposal (5 points)
+* 5 points: Group formation is complete (on Canvas), app idea is interesting and complex enough to work on for project, good amount of thought put into creation, design, and architecture
 
 ### Milestone 1 (10 points)
-* 10 points: Good design documentation and sketches/figma of possible views
+* 10 points: Good design documentation and sketches/figma of possible views. Detailed rubric TBD
 
 ### Project Code (40 points)
 * 10 points: App architecture makes sense (e.g. views/view models/models)
@@ -131,13 +167,13 @@ This project is worth 100 points, broken down as follows:
 * 10 points: Correctly implements one course concept
 * 10 points: Correctly implements second course concept
 
-### Project Presentation (35 points)
+### Project Presentation (40 points)
 * 10 points: Clarity - is presentation clear and app idea well-motivated
 * 10 points: Demo covers the important functionality of app
 * 20 points: **Is the app a finished product?** Ask yourself, if someone else made this app and I downloaded it from the App Store, would I enjoy using it and is it polished? It should be a fully functional, complete, error free, and enjoyable app.
 
 ### Code Quality & Style (5 points)
-* 10 points: Code is readable (i.e. indentation and naming of symbols is reasonable)
+* 5 points: Code is readable (i.e. indentation and naming of symbols is reasonable)
 
 ### Deductions
 * -40 points: App doesn't compile
@@ -149,6 +185,10 @@ This project is worth 100 points, broken down as follows:
 To submit the project proposal, upload a .pdf or .docx of your **proposal** to Canvas. Make sure you've given the requirements another read before you do so.
 
 <a className="button not-prose mr-1" href="https://canvas.upenn.edu/courses/1774063/assignments/12247325"> Submit the project proposal on Canvas →</a>
+
+To submit the project milestone 1, upload a .pdf or .docx of your **project milestone 1** to Canvas. Make sure you've given the requirements another read before you do so.
+
+<a className="button not-prose mr-1" href="https://canvas.upenn.edu/courses/1774063/assignments/12252202"> Submit the project milestone 1 on Canvas →</a>
 
 To submit the final project, upload a zip (or .tar.gz) of your **entire Xcode project** to Canvas. Make sure you've given the requirements another read before you do so.
 
