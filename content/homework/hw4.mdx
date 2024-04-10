@@ -207,8 +207,8 @@ struct Location: Identifiable, Decodable {
 }
 
 struct Address: Decodable {
-    let city: String
-    let county: String
+    let city: String?
+    let county: String?
     let state: String
     let country: String
     let country_code: String
@@ -232,6 +232,7 @@ struct WeatherData: Decodable {
     let precipitation: [Double]
 
     enum CodingKeys: String, CodingKey {
+        case time
         case temperature = "temperature_2m"
         case precipitation_probability
         case precipitation
