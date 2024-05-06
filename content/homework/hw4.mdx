@@ -32,7 +32,7 @@ Your app should have at least three screens:
 * A screen showing some previous search of a location and the results from that query.
 
 Therefore you will need some way to save any given search, or the results from that search (probably two buttons on the weather detail screen). Then you will need a way to navigate to these saved search locations, and a way to see prior saved results. You need to decide how it's best to navigate between these, but we recommend one of the following:
-* `NavigationSplitView` similar to what we had with the [Minicourse Browser](https://github.com/cis1951/lec5-code) and [iOstagram](https://github.com/cis1951/lec8-code) where saved locations would appear on the side bar. The left sidebar could be split into two sections (two lists), one on top showing the saved locations, and one on the bottom showing the saved results.
+* `NavigationSplitView` similar to what we had with the [Minicourse Browser](https://github.com/cis1951/lec5-code) and [iOStagram](https://github.com/cis1951/lec8-code) where saved locations would appear on the side bar. The left sidebar could be split into two sections (two lists), one on top showing the saved locations, and one on the bottom showing the saved results.
 * A `TabView` with the `.tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))` modifier. Then you can swipe to navigate between saved locations, if they're there. Then you can decide how else to navigate to the saved search results.
 
 Specifically, the weather detail screen should:
@@ -254,7 +254,7 @@ Now use `@StateObject` in your main view to create an instance of this view mode
 
 ### Step 4: Write the home screen
 
-Now, you can start writing the home screen, using the view model and models you wrote in steps 2 and 3. As mentioned earlier, one possible option for the navigation is the NavigationSplitView (like in [Minicourse Browser](https://github.com/cis1951/lec5-code) and [iOstagram](https://github.com/cis1951/lec8-code)).
+Now, you can start writing the home screen, using the view model and models you wrote in steps 2 and 3. As mentioned earlier, one possible option for the navigation is the NavigationSplitView (like in [Minicourse Browser](https://github.com/cis1951/lec5-code) and [iOStagram](https://github.com/cis1951/lec8-code)).
 
 But for now, just worry about the content of the home view. We want a few input boxes, but the details are up to you. Decide if you want the user to either enter a generic string that could represent a location, or if you want multiple boxes for city/state or something similar to that (this will be directly passed into the geocoding API later). Then make a button that will get the location (longitude/latitude, the Location struct) from this string, and move to the weather details view from the resulting Location struct.
 
@@ -321,7 +321,7 @@ This assignment is worth 100 points, broken down as follows:
 * 5 points: App calls these API functions at the appropriate locations
 
 ### Persistent Data Storage (25 points)
-* 5 points: Decided on appropraite types of persistent storage for data
+* 5 points: Decided on appropriate types of persistent storage for data
 * There are 2 places where data needs to be stored, and each is worth 10 points:
     - If UserDefaults is used:
         * 10 points: Correctly uses `@AppStorage` wrapper on variable and variable is properly used in the code
@@ -331,7 +331,7 @@ This assignment is worth 100 points, broken down as follows:
 
 ### App Architecture (15 points)
 * 5 points: App uses a model struct to represent the locations and weather data
-* 10 points: App uses a view model to keep track of the data used throughout the app
+* 5 points: App uses a view model to keep track of the data used throughout the app
 * 5 points: App successfully uses `@StateObject`, `@ObservedObject`, and/or `@EnvironmentObject` to share the view model between the home and dining hall screens
 
 ### Code Quality (10 points)
