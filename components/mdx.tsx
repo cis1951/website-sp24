@@ -8,7 +8,7 @@ import { FormattedDate } from "./FormattedDate";
 
 export const mdxComponents: MDXComponents = {
     a: ({ href, ...props }) => {
-        const prefix = "/~cis1951/"
+        const prefix = "/~cis1951/24sp/"
         if (typeof href === "string") {
             return <Link href={href.startsWith(prefix) ? href.slice(prefix.length - 1) : href} legacyBehavior>
                 <a {...props} />

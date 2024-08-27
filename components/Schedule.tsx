@@ -77,7 +77,7 @@ export function ScheduleRow({ date, ...details }: ScheduleItem) {
         content = <div>
             <div>🧑‍🏫 {details.title}</div>
             <div className="flex gap-2">
-                {details.files.map(file => <a className="link" href={`/~cis1951/lectures/${details.slug}/${file}`} key={file}>{file}</a>)}
+                {details.files.map(file => <a className="link" href={`/~cis1951/24sp/lectures/${details.slug}/${file}`} key={file}>{file}</a>)}
             </div>
         </div>
     } else if (details.type === "assignment") {
